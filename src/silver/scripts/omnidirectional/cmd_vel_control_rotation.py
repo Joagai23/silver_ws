@@ -149,14 +149,14 @@ class OmnidirectionalGaitController(Node):
 
             i += 1
 
-    def go_to_dragon_pose(self):
-        self.get_logger().info("Initializing: Moving to Dragon Pose safely in joint space...")
+    def go_to_pose(self, position:str):
+        self.get_logger().info("Initializing: Moving to Pose safely in joint space...")
 
         for _ in range(10):
             rclpy.spin_once(self, timeout_sec=0.1)
 
         Q_start = np.copy(self.Q_current)
-        Q_end = robot.static_poses_pos['dragon']
+        Q_end = robot.static_poses_pos[position]
 
         steps = 60
         delay = 3.0 / steps 
@@ -172,10 +172,10 @@ class OmnidirectionalGaitController(Node):
             self.pid_pos_publisher.publish(msg)
             time.sleep(delay)
 
-        self.get_logger().info("Dragon Pose reached! Ready for /cmd_vel inputs.")
+        self.get_logger().info("Pose reached! Ready for /cmd_vel inputs.")
 
-    def go_to_dragon_pose_slow(self):
-        self.get_logger().info("Initializing: Moving to Dragon Pose ONE LEG AT A TIME...")
+    def go_to_pose_slow(self, position:str):
+        self.get_logger().info("Initializing: Moving to Pose ONE LEG AT A TIME...")
 
         # Wait a moment to ensure we have received the actual physical joint states
         for _ in range(10):
@@ -183,11 +183,11 @@ class OmnidirectionalGaitController(Node):
 
         # Grab the current real-world starting positions
         Q_current_tracker = np.copy(self.Q_current)
-        Q_target = robot.static_poses_pos['dragon']
+        Q_target = robot.static_poses_pos[position]
 
         # Loop through each of the 6 legs sequentially
         for leg_id in range(6):
-            self.get_logger().info(f"Moving Leg {leg_id} to Dragon Pose...")
+            self.get_logger().info(f"Moving Leg {leg_id} to Pose...")
             Q_start = np.copy(Q_current_tracker)
             
             # Move each leg over 1.5 seconds
@@ -219,7 +219,7 @@ class OmnidirectionalGaitController(Node):
             # Pause for half a second before moving the next leg
             time.sleep(0.5)
 
-        self.get_logger().info("Dragon Pose successfully reached! Ready for /cmd_vel inputs.")
+        self.get_logger().info("Pose successfully reached! Ready for /cmd_vel inputs.")
 
 if __name__ == '__main__':
     rclpy.init()
@@ -230,7 +230,7 @@ if __name__ == '__main__':
         print(e)
         sys.exit(1)
 
-    gait_controller.go_to_dragon_pose_slow()
+    gait_controller.go_to_pose_slow(position='zero')
 
     gait_controller.omni_loop()
     rclpy.shutdown()
