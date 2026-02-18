@@ -1,0 +1,22 @@
+running develop
+running egg_info
+creating ms5837.egg-info
+writing ms5837.egg-info/PKG-INFO
+writing dependency_links to ms5837.egg-info/dependency_links.txt
+writing entry points to ms5837.egg-info/entry_points.txt
+writing requirements to ms5837.egg-info/requires.txt
+writing top-level names to ms5837.egg-info/top_level.txt
+writing manifest file 'ms5837.egg-info/SOURCES.txt'
+reading manifest file 'ms5837.egg-info/SOURCES.txt'
+writing manifest file 'ms5837.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/silver/silver_ws/src/install/ms5837/lib/python3.12/site-packages/ms5837.egg-link (link to .)
+Installing ms5837_node script to /home/silver/silver_ws/src/install/ms5837/lib/ms5837
+
+Installed /home/silver/silver_ws/src/build/ms5837
+running symlink_data
+creating /home/silver/silver_ws/src/install/ms5837/share/ament_index
+creating /home/silver/silver_ws/src/install/ms5837/share/ament_index/resource_index
+creating /home/silver/silver_ws/src/install/ms5837/share/ament_index/resource_index/packages
+symbolically linking /home/silver/silver_ws/src/build/ms5837/resource/ms5837 -> /home/silver/silver_ws/src/install/ms5837/share/ament_index/resource_index/packages
+symbolically linking /home/silver/silver_ws/src/build/ms5837/package.xml -> /home/silver/silver_ws/src/install/ms5837/share/ms5837

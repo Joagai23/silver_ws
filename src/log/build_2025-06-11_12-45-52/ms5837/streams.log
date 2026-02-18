@@ -1,0 +1,24 @@
+[4.262s] Invoking command in '/home/silver/silver_ws/src/build/ms5837': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/silver/silver_ws/src/build/ms5837/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/silver/silver_ws/src/install/ms5837/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/silver/silver_ws/src/build/ms5837/build --no-deps symlink_data
+[6.009s] running develop
+[7.145s] running egg_info
+[7.146s] creating ms5837.egg-info
+[7.253s] writing ms5837.egg-info/PKG-INFO
+[7.257s] writing dependency_links to ms5837.egg-info/dependency_links.txt
+[7.260s] writing entry points to ms5837.egg-info/entry_points.txt
+[7.263s] writing requirements to ms5837.egg-info/requires.txt
+[7.264s] writing top-level names to ms5837.egg-info/top_level.txt
+[7.266s] writing manifest file 'ms5837.egg-info/SOURCES.txt'
+[7.476s] reading manifest file 'ms5837.egg-info/SOURCES.txt'
+[7.479s] writing manifest file 'ms5837.egg-info/SOURCES.txt'
+[7.589s] running build_ext
+[7.590s] Creating /home/silver/silver_ws/src/install/ms5837/lib/python3.12/site-packages/ms5837.egg-link (link to .)
+[7.593s] Installing ms5837_node script to /home/silver/silver_ws/src/install/ms5837/lib/ms5837
+[7.594s] 
+[7.595s] Installed /home/silver/silver_ws/src/build/ms5837
+[7.595s] running symlink_data
+[7.596s] creating /home/silver/silver_ws/src/install/ms5837/share/ament_index
+[7.596s] creating /home/silver/silver_ws/src/install/ms5837/share/ament_index/resource_index
+[7.597s] creating /home/silver/silver_ws/src/install/ms5837/share/ament_index/resource_index/packages
+[7.598s] symbolically linking /home/silver/silver_ws/src/build/ms5837/resource/ms5837 -> /home/silver/silver_ws/src/install/ms5837/share/ament_index/resource_index/packages
+[7.598s] symbolically linking /home/silver/silver_ws/src/build/ms5837/package.xml -> /home/silver/silver_ws/src/install/ms5837/share/ms5837
+[7.788s] Invoked command in '/home/silver/silver_ws/src/build/ms5837' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/silver/silver_ws/src/build/ms5837/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/silver/silver_ws/src/install/ms5837/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/silver/silver_ws/src/build/ms5837/build --no-deps symlink_data

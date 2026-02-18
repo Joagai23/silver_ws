@@ -1,0 +1,21 @@
+[0.142s] Invoking command in '/home/silver/silver_ws/src/build/silver_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/silver/silver_ws/src/install/ms5837:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PS1=(venv) \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ VIRTUAL_ENV_PROMPT=(venv) /usr/bin/cmake /home/silver/silver_ws/src/silver_interfaces -DCMAKE_INSTALL_PREFIX=/home/silver/silver_ws/src/install/silver_interfaces
+[1.417s] -- Found ament_cmake: 2.5.4 (/opt/ros/jazzy/share/ament_cmake/cmake)
+[1.420s] -- Found ament_lint_auto: 0.17.2 (/opt/ros/jazzy/share/ament_lint_auto/cmake)
+[1.421s] -- Configuring incomplete, errors occurred!
+[1.422s] Traceback (most recent call last):
+[1.422s]   File "/opt/ros/jazzy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py", line 22, in <module>
+[1.423s]     from catkin_pkg.package import parse_package_string
+[1.423s] ModuleNotFoundError: No module named 'catkin_pkg'
+[1.424s] [31mCMake Error at /opt/ros/jazzy/share/ament_cmake_core/cmake/core/ament_package_xml.cmake:95 (message):
+[1.425s]   execute_process(/home/silver/silver_ws/venv/bin/python3
+[1.425s]   /opt/ros/jazzy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py
+[1.426s]   /home/silver/silver_ws/src/silver_interfaces/package.xml
+[1.426s]   /home/silver/silver_ws/src/build/silver_interfaces/ament_cmake_core/package.cmake)
+[1.427s]   returned error code 1
+[1.427s] Call Stack (most recent call first):
+[1.427s]   /opt/ros/jazzy/share/ament_cmake_core/cmake/core/ament_package_xml.cmake:49 (_ament_package_xml)
+[1.428s]   /opt/ros/jazzy/share/ament_lint_auto/cmake/ament_lint_auto_find_test_dependencies.cmake:31 (ament_package_xml)
+[1.428s]   CMakeLists.txt:23 (ament_lint_auto_find_test_dependencies)
+[1.429s] 
+[1.429s] [0m
+[1.430s] Invoked command in '/home/silver/silver_ws/src/build/silver_interfaces' returned '1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/silver/silver_ws/src/install/ms5837:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PS1=(venv) \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ VIRTUAL_ENV_PROMPT=(venv) /usr/bin/cmake /home/silver/silver_ws/src/silver_interfaces -DCMAKE_INSTALL_PREFIX=/home/silver/silver_ws/src/install/silver_interfaces

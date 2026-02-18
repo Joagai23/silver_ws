@@ -1,0 +1,124 @@
+[0.000000] (-) TimerEvent: {}
+[0.001067] (-) JobUnselected: {'identifier': 'bno055'}
+[0.001699] (-) JobUnselected: {'identifier': 'dht11'}
+[0.002426] (-) JobUnselected: {'identifier': 'ltc2945'}
+[0.003009] (-) JobUnselected: {'identifier': 'ms5837'}
+[0.003184] (-) JobUnselected: {'identifier': 'ms8607'}
+[0.003274] (-) JobUnselected: {'identifier': 'my_camera_publisher'}
+[0.003370] (-) JobUnselected: {'identifier': 'pan_tilt_camera'}
+[0.003442] (-) JobUnselected: {'identifier': 'silver'}
+[0.003512] (-) JobUnselected: {'identifier': 'silver_interfaces'}
+[0.003633] (-) JobUnselected: {'identifier': 'torches'}
+[0.004092] (dynamixel_hardware) JobQueued: {'identifier': 'dynamixel_hardware', 'dependencies': OrderedDict()}
+[0.005152] (dynamixel_hardware) JobStarted: {'identifier': 'dynamixel_hardware'}
+[0.044337] (dynamixel_hardware) JobProgress: {'identifier': 'dynamixel_hardware', 'progress': 'cmake'}
+[0.046942] (dynamixel_hardware) Command: {'cmd': ['/usr/bin/cmake', '/home/silver/silver_ws/src/dynamixel_hardware/dynamixel_hardware', '-DCMAKE_INSTALL_PREFIX=/home/silver/silver_ws/src/install/dynamixel_hardware'], 'cwd': '/home/silver/silver_ws/src/build/dynamixel_hardware', 'env': OrderedDict({'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'silver', 'SSH_CLIENT': '192.168.8.108 39744 22', 'LC_TIME': 'es_ES.UTF-8', 'XDG_SESSION_TYPE': 'tty', 'GIT_ASKPASS': '/home/silver/.vscode-server/cli/servers/Stable-258e40fedc6cb8edf399a463ce3a9d32e7e1f6f3/server/extensions/git/dist/askpass.sh', 'SHLVL': '2', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/opt/rviz_ogre_vendor/lib:/opt/ros/jazzy/lib/aarch64-linux-gnu:/opt/ros/jazzy/opt/gz_math_vendor/lib:/opt/ros/jazzy/opt/gz_utils_vendor/lib:/opt/ros/jazzy/opt/gz_cmake_vendor/lib:/opt/ros/jazzy/lib', 'BROWSER': '/home/silver/.vscode-server/cli/servers/Stable-258e40fedc6cb8edf399a463ce3a9d32e7e1f6f3/server/bin/helpers/browser.sh', 'HOME': '/home/silver', 'TERM_PROGRAM_VERSION': '1.100.3', 'VSCODE_IPC_HOOK_CLI': '/run/user/1002/vscode-ipc-4fdd3106-9af5-4c0a-85f9-32596b7768e2.sock', 'ROS_PYTHON_VERSION': '3', 'VSCODE_GIT_ASKPASS_MAIN': '/home/silver/.vscode-server/cli/servers/Stable-258e40fedc6cb8edf399a463ce3a9d32e7e1f6f3/server/extensions/git/dist/askpass-main.js', 'LC_MONETARY': 'es_ES.UTF-8', 'VSCODE_GIT_ASKPASS_NODE': '/home/silver/.vscode-server/cli/servers/Stable-258e40fedc6cb8edf399a463ce3a9d32e7e1f6f3/server/node', 'SSL_CERT_FILE': '/usr/lib/ssl/cert.pem', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1002/bus', 'COLORTERM': 'truecolor', 'DEBUGINFOD_URLS': 'https://debuginfod.ubuntu.com', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'silver', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '2', 'PATH': '/home/silver/.vscode-server/cli/servers/Stable-258e40fedc6cb8edf399a463ce3a9d32e7e1f6f3/server/bin/remote-cli:/home/silver/.local/bin:/opt/ros/jazzy/bin:/home/silver/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'LC_ADDRESS': 'es_ES.UTF-8', 'XDG_RUNTIME_DIR': '/run/user/1002', 'SSL_CERT_DIR': '/usr/lib/ssl/certs', 'LANG': 'en_US.UTF-8', 'LC_TELEPHONE': 'es_ES.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'VSCODE_GIT_IPC_HANDLE': '/run/user/1002/vscode-git-263103c979.sock', 'TERM_PROGRAM': 'vscode', 'AMENT_PREFIX_PATH': '/opt/ros/jazzy', 'SHELL': '/bin/bash', 'LC_NAME': 'es_ES.UTF-8', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'LC_MEASUREMENT': 'es_ES.UTF-8', 'LC_IDENTIFICATION': 'es_ES.UTF-8', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'PWD': '/home/silver/silver_ws/src/build/dynamixel_hardware', 'LC_ALL': 'en_US.UTF-8', 'SSH_CONNECTION': '192.168.8.108 39744 192.168.8.107 22', 'XDG_DATA_DIRS': '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/opt/ros/jazzy/lib/python3.12/site-packages', 'LC_NUMERIC': 'es_ES.UTF-8', 'LC_PAPER': 'es_ES.UTF-8', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor:/opt/ros/jazzy'}), 'shell': False}
+[0.099223] (-) TimerEvent: {}
+[0.201034] (-) TimerEvent: {}
+[0.302144] (-) TimerEvent: {}
+[0.376224] (dynamixel_hardware) StdoutLine: {'line': b'-- The C compiler identification is GNU 13.3.0\n'}
+[0.402372] (-) TimerEvent: {}
+[0.503113] (-) TimerEvent: {}
+[0.603930] (-) TimerEvent: {}
+[0.689847] (dynamixel_hardware) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 13.3.0\n'}
+[0.704152] (-) TimerEvent: {}
+[0.794647] (dynamixel_hardware) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.804387] (-) TimerEvent: {}
+[0.905214] (-) TimerEvent: {}
+[1.005968] (-) TimerEvent: {}
+[1.106736] (-) TimerEvent: {}
+[1.207412] (-) TimerEvent: {}
+[1.308220] (-) TimerEvent: {}
+[1.322840] (dynamixel_hardware) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[1.360220] (dynamixel_hardware) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[1.361337] (dynamixel_hardware) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[1.363091] (dynamixel_hardware) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[1.408413] (-) TimerEvent: {}
+[1.417044] (dynamixel_hardware) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[1.508657] (-) TimerEvent: {}
+[1.609303] (-) TimerEvent: {}
+[1.710070] (-) TimerEvent: {}
+[1.810741] (-) TimerEvent: {}
+[1.911504] (-) TimerEvent: {}
+[1.984289] (dynamixel_hardware) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[2.011687] (-) TimerEvent: {}
+[2.022912] (dynamixel_hardware) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[2.024354] (dynamixel_hardware) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[2.026119] (dynamixel_hardware) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[2.054226] (dynamixel_hardware) StdoutLine: {'line': b'-- Found ament_cmake: 2.5.4 (/opt/ros/jazzy/share/ament_cmake/cmake)\n'}
+[2.111915] (-) TimerEvent: {}
+[2.212644] (-) TimerEvent: {}
+[2.313248] (-) TimerEvent: {}
+[2.413921] (-) TimerEvent: {}
+[2.514644] (-) TimerEvent: {}
+[2.615365] (-) TimerEvent: {}
+[2.716217] (-) TimerEvent: {}
+[2.817057] (-) TimerEvent: {}
+[2.849487] (dynamixel_hardware) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter \n'}
+[2.917234] (-) TimerEvent: {}
+[3.017834] (-) TimerEvent: {}
+[3.118427] (-) TimerEvent: {}
+[3.219181] (-) TimerEvent: {}
+[3.319875] (-) TimerEvent: {}
+[3.420501] (-) TimerEvent: {}
+[3.521181] (-) TimerEvent: {}
+[3.547933] (dynamixel_hardware) StdoutLine: {'line': b'-- Found rclcpp: 28.1.9 (/opt/ros/jazzy/share/rclcpp/cmake)\n'}
+[3.621364] (-) TimerEvent: {}
+[3.722046] (-) TimerEvent: {}
+[3.822708] (-) TimerEvent: {}
+[3.909350] (dynamixel_hardware) StdoutLine: {'line': b'-- Found rosidl_generator_c: 4.6.5 (/opt/ros/jazzy/share/rosidl_generator_c/cmake)\n'}
+[3.922885] (-) TimerEvent: {}
+[4.015946] (dynamixel_hardware) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 4.6.5 (/opt/ros/jazzy/share/rosidl_generator_cpp/cmake)\n'}
+[4.023131] (-) TimerEvent: {}
+[4.123822] (-) TimerEvent: {}
+[4.131903] (dynamixel_hardware) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[4.224015] (-) TimerEvent: {}
+[4.256388] (dynamixel_hardware) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[4.324216] (-) TimerEvent: {}
+[4.424843] (-) TimerEvent: {}
+[4.525499] (-) TimerEvent: {}
+[4.626190] (-) TimerEvent: {}
+[4.716404] (dynamixel_hardware) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 7.3.2 (/opt/ros/jazzy/share/rmw_implementation_cmake/cmake)\n'}
+[4.726370] (-) TimerEvent: {}
+[4.744181] (dynamixel_hardware) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 8.4.2 (/opt/ros/jazzy/share/rmw_fastrtps_cpp/cmake)\n'}
+[4.826626] (-) TimerEvent: {}
+[4.927237] (-) TimerEvent: {}
+[5.027936] (-) TimerEvent: {}
+[5.128906] (-) TimerEvent: {}
+[5.229733] (-) TimerEvent: {}
+[5.278063] (dynamixel_hardware) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "3.0.13")  \n'}
+[5.329906] (-) TimerEvent: {}
+[5.387612] (dynamixel_hardware) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/jazzy/include (Required is at least version "2.13") \n'}
+[5.430114] (-) TimerEvent: {}
+[5.486435] (dynamixel_hardware) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[5.530292] (-) TimerEvent: {}
+[5.630937] (-) TimerEvent: {}
+[5.731636] (-) TimerEvent: {}
+[5.832287] (-) TimerEvent: {}
+[5.870064] (dynamixel_hardware) StdoutLine: {'line': b'-- Found rclcpp_lifecycle: 28.1.9 (/opt/ros/jazzy/share/rclcpp_lifecycle/cmake)\n'}
+[5.932483] (-) TimerEvent: {}
+[6.033211] (-) TimerEvent: {}
+[6.133888] (-) TimerEvent: {}
+[6.206449] (dynamixel_hardware) StderrLine: {'line': b'\x1b[31mCMake Error at CMakeLists.txt:23 (find_package):\n'}
+[6.207496] (dynamixel_hardware) StderrLine: {'line': b'  By not providing "Findhardware_interface.cmake" in CMAKE_MODULE_PATH this\n'}
+[6.208215] (dynamixel_hardware) StderrLine: {'line': b'  project has asked CMake to find a package configuration file provided by\n'}
+[6.208876] (dynamixel_hardware) StderrLine: {'line': b'  "hardware_interface", but CMake did not find one.\n'}
+[6.209614] (dynamixel_hardware) StderrLine: {'line': b'\n'}
+[6.210422] (dynamixel_hardware) StderrLine: {'line': b'  Could not find a package configuration file provided by\n'}
+[6.211700] (dynamixel_hardware) StderrLine: {'line': b'  "hardware_interface" with any of the following names:\n'}
+[6.212449] (dynamixel_hardware) StderrLine: {'line': b'\n'}
+[6.213338] (dynamixel_hardware) StderrLine: {'line': b'    hardware_interfaceConfig.cmake\n'}
+[6.214264] (dynamixel_hardware) StderrLine: {'line': b'    hardware_interface-config.cmake\n'}
+[6.215301] (dynamixel_hardware) StderrLine: {'line': b'\n'}
+[6.216956] (dynamixel_hardware) StderrLine: {'line': b'  Add the installation prefix of "hardware_interface" to CMAKE_PREFIX_PATH or\n'}
+[6.219781] (dynamixel_hardware) StderrLine: {'line': b'  set "hardware_interface_DIR" to a directory containing one of the above\n'}
+[6.221242] (dynamixel_hardware) StderrLine: {'line': b'  files.  If "hardware_interface" provides a separate development package or\n'}
+[6.222398] (dynamixel_hardware) StderrLine: {'line': b'  SDK, be sure it has been installed.\n'}
+[6.223365] (dynamixel_hardware) StderrLine: {'line': b'\n'}
+[6.224510] (dynamixel_hardware) StderrLine: {'line': b'\x1b[0m\n'}
+[6.225703] (dynamixel_hardware) StdoutLine: {'line': b'-- Configuring incomplete, errors occurred!\n'}
+[6.234236] (-) TimerEvent: {}
+[6.250696] (dynamixel_hardware) CommandEnded: {'returncode': 1}
+[6.334927] (-) TimerEvent: {}
+[6.355325] (dynamixel_hardware) JobEnded: {'identifier': 'dynamixel_hardware', 'rc': 1}
+[6.367355] (-) EventReactorShutdown: {}

@@ -1,0 +1,142 @@
+[0.000000] (-) TimerEvent: {}
+[0.000586] (bno055) JobQueued: {'identifier': 'bno055', 'dependencies': OrderedDict()}
+[0.001064] (dynamixel_hardware) JobQueued: {'identifier': 'dynamixel_hardware', 'dependencies': OrderedDict()}
+[0.001168] (ltc2945) JobQueued: {'identifier': 'ltc2945', 'dependencies': OrderedDict()}
+[0.001245] (ms5837) JobQueued: {'identifier': 'ms5837', 'dependencies': OrderedDict()}
+[0.001310] (ms8607) JobQueued: {'identifier': 'ms8607', 'dependencies': OrderedDict()}
+[0.001375] (pan_tilt_camera) JobQueued: {'identifier': 'pan_tilt_camera', 'dependencies': OrderedDict()}
+[0.001438] (silver) JobQueued: {'identifier': 'silver', 'dependencies': OrderedDict()}
+[0.001499] (silver_interfaces) JobQueued: {'identifier': 'silver_interfaces', 'dependencies': OrderedDict()}
+[0.001561] (torches) JobQueued: {'identifier': 'torches', 'dependencies': OrderedDict()}
+[0.001620] (dht11) JobQueued: {'identifier': 'dht11', 'dependencies': OrderedDict({'silver_interfaces': '/home/silver/silver_ws/src/install/silver_interfaces'})}
+[0.002504] (silver_interfaces) JobStarted: {'identifier': 'silver_interfaces'}
+[0.048144] (bno055) JobStarted: {'identifier': 'bno055'}
+[0.081223] (dynamixel_hardware) JobStarted: {'identifier': 'dynamixel_hardware'}
+[0.099184] (-) TimerEvent: {}
+[0.103299] (ltc2945) JobStarted: {'identifier': 'ltc2945'}
+[0.135335] (silver_interfaces) JobProgress: {'identifier': 'silver_interfaces', 'progress': 'cmake'}
+[0.137703] (silver_interfaces) Command: {'cmd': ['/usr/bin/cmake', '/home/silver/silver_ws/src/silver_interfaces', '-DCMAKE_INSTALL_PREFIX=/home/silver/silver_ws/src/install/silver_interfaces'], 'cwd': '/home/silver/silver_ws/src/build/silver_interfaces', 'env': OrderedDict({'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'silver', 'SSH_CLIENT': '192.168.1.22 42474 22', 'LC_TIME': 'es_ES.UTF-8', 'GZ_CONFIG_PATH': '/opt/ros/jazzy/opt/sdformat_vendor/share/gz', 'XDG_SESSION_TYPE': 'tty', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/opt/sdformat_vendor/lib:/opt/ros/jazzy/opt/rviz_ogre_vendor/lib:/opt/ros/jazzy/lib/aarch64-linux-gnu:/opt/ros/jazzy/opt/gz_math_vendor/lib:/opt/ros/jazzy/opt/gz_utils_vendor/lib:/opt/ros/jazzy/opt/gz_tools_vendor/lib:/opt/ros/jazzy/opt/gz_cmake_vendor/lib:/opt/ros/jazzy/lib', 'HOME': '/home/silver', 'OLDPWD': '/home/silver/silver_ws', 'SSH_TTY': '/dev/pts/0', 'ROS_PYTHON_VERSION': '3', 'PS1': '(venv) \\[\\e]0;\\u@\\h: \\w\\a\\]${debian_chroot:+($debian_chroot)}\\[\\033[01;32m\\]\\u@\\h\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\$', 'LC_MONETARY': 'es_ES.UTF-8', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1002/bus', 'DEBUGINFOD_URLS': 'https://debuginfod.ubuntu.com', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'silver', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '7', 'PATH': '/home/silver/silver_ws/venv/bin:/home/silver/.local/bin:/opt/ros/jazzy/opt/gz_tools_vendor/bin:/opt/ros/jazzy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'LC_ADDRESS': 'es_ES.UTF-8', 'XDG_RUNTIME_DIR': '/run/user/1002', 'LANG': 'en_US.UTF-8', 'LC_TELEPHONE': 'es_ES.UTF-8', 'VIRTUAL_ENV_PROMPT': '(venv)', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'ROS_DOMAIN_ID': '1', 'AMENT_PREFIX_PATH': '/opt/ros/jazzy', 'SHELL': '/bin/bash', 'LC_NAME': 'es_ES.UTF-8', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'LC_MEASUREMENT': 'es_ES.UTF-8', 'LC_IDENTIFICATION': 'es_ES.UTF-8', 'VIRTUAL_ENV': '/home/silver/silver_ws/venv', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'PWD': '/home/silver/silver_ws/src/build/silver_interfaces', 'LC_ALL': 'en_US.UTF-8', 'SSH_CONNECTION': '192.168.1.22 42474 192.168.1.21 22', 'XDG_DATA_DIRS': '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/opt/ros/jazzy/lib/python3.12/site-packages', 'LC_NUMERIC': 'es_ES.UTF-8', 'LC_PAPER': 'es_ES.UTF-8', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/opt/ros/jazzy/opt/sdformat_vendor:/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_tools_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor:/opt/ros/jazzy'}), 'shell': False}
+[0.199368] (-) TimerEvent: {}
+[0.299989] (-) TimerEvent: {}
+[0.400667] (-) TimerEvent: {}
+[0.501268] (-) TimerEvent: {}
+[0.602014] (-) TimerEvent: {}
+[0.703086] (-) TimerEvent: {}
+[0.804196] (-) TimerEvent: {}
+[0.904911] (-) TimerEvent: {}
+[1.005746] (-) TimerEvent: {}
+[1.106350] (-) TimerEvent: {}
+[1.206942] (-) TimerEvent: {}
+[1.307685] (-) TimerEvent: {}
+[1.403387] (dynamixel_hardware) JobProgress: {'identifier': 'dynamixel_hardware', 'progress': 'cmake'}
+[1.407919] (-) TimerEvent: {}
+[1.508713] (-) TimerEvent: {}
+[1.512948] (dynamixel_hardware) Command: {'cmd': ['/usr/bin/cmake', '/home/silver/silver_ws/src/dynamixel/dynamixel_hardware', '-DCMAKE_INSTALL_PREFIX=/home/silver/silver_ws/src/install/dynamixel_hardware'], 'cwd': '/home/silver/silver_ws/src/build/dynamixel_hardware', 'env': OrderedDict({'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'silver', 'SSH_CLIENT': '192.168.1.22 42474 22', 'LC_TIME': 'es_ES.UTF-8', 'GZ_CONFIG_PATH': '/opt/ros/jazzy/opt/sdformat_vendor/share/gz', 'XDG_SESSION_TYPE': 'tty', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/opt/sdformat_vendor/lib:/opt/ros/jazzy/opt/rviz_ogre_vendor/lib:/opt/ros/jazzy/lib/aarch64-linux-gnu:/opt/ros/jazzy/opt/gz_math_vendor/lib:/opt/ros/jazzy/opt/gz_utils_vendor/lib:/opt/ros/jazzy/opt/gz_tools_vendor/lib:/opt/ros/jazzy/opt/gz_cmake_vendor/lib:/opt/ros/jazzy/lib', 'HOME': '/home/silver', 'OLDPWD': '/home/silver/silver_ws', 'SSH_TTY': '/dev/pts/0', 'ROS_PYTHON_VERSION': '3', 'PS1': '(venv) \\[\\e]0;\\u@\\h: \\w\\a\\]${debian_chroot:+($debian_chroot)}\\[\\033[01;32m\\]\\u@\\h\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\$', 'LC_MONETARY': 'es_ES.UTF-8', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1002/bus', 'DEBUGINFOD_URLS': 'https://debuginfod.ubuntu.com', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'silver', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '7', 'PATH': '/home/silver/silver_ws/venv/bin:/home/silver/.local/bin:/opt/ros/jazzy/opt/gz_tools_vendor/bin:/opt/ros/jazzy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'LC_ADDRESS': 'es_ES.UTF-8', 'XDG_RUNTIME_DIR': '/run/user/1002', 'LANG': 'en_US.UTF-8', 'LC_TELEPHONE': 'es_ES.UTF-8', 'VIRTUAL_ENV_PROMPT': '(venv)', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'ROS_DOMAIN_ID': '1', 'AMENT_PREFIX_PATH': '/opt/ros/jazzy', 'SHELL': '/bin/bash', 'LC_NAME': 'es_ES.UTF-8', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'LC_MEASUREMENT': 'es_ES.UTF-8', 'LC_IDENTIFICATION': 'es_ES.UTF-8', 'VIRTUAL_ENV': '/home/silver/silver_ws/venv', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'PWD': '/home/silver/silver_ws/src/build/dynamixel_hardware', 'LC_ALL': 'en_US.UTF-8', 'SSH_CONNECTION': '192.168.1.22 42474 192.168.1.21 22', 'XDG_DATA_DIRS': '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/opt/ros/jazzy/lib/python3.12/site-packages', 'LC_NUMERIC': 'es_ES.UTF-8', 'LC_PAPER': 'es_ES.UTF-8', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/opt/ros/jazzy/opt/sdformat_vendor:/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_tools_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor:/opt/ros/jazzy'}), 'shell': False}
+[1.599937] (dynamixel_hardware) StderrLine: {'line': b'\x1b[0mCMake Error: The source "/home/silver/silver_ws/src/dynamixel/dynamixel_hardware/CMakeLists.txt" does not match the source "/home/silver/silver_ws/src/dynamixel_hardware/dynamixel_hardware/CMakeLists.txt" used to generate cache.  Re-run cmake with a different source directory.\x1b[0m\n'}
+[1.608858] (-) TimerEvent: {}
+[1.709579] (-) TimerEvent: {}
+[1.810241] (-) TimerEvent: {}
+[1.910869] (-) TimerEvent: {}
+[2.011564] (-) TimerEvent: {}
+[2.112211] (-) TimerEvent: {}
+[2.212801] (-) TimerEvent: {}
+[2.313444] (-) TimerEvent: {}
+[2.414033] (-) TimerEvent: {}
+[2.415938] (silver_interfaces) StdoutLine: {'line': b'-- The C compiler identification is GNU 13.3.0\n'}
+[2.514297] (-) TimerEvent: {}
+[2.617468] (-) TimerEvent: {}
+[2.651612] (dynamixel_hardware) CommandEnded: {'returncode': 1}
+[2.717819] (-) TimerEvent: {}
+[2.818703] (-) TimerEvent: {}
+[2.919481] (-) TimerEvent: {}
+[3.020201] (-) TimerEvent: {}
+[3.052480] (dynamixel_hardware) JobEnded: {'identifier': 'dynamixel_hardware', 'rc': 1}
+[3.120407] (-) TimerEvent: {}
+[3.221170] (-) TimerEvent: {}
+[3.321758] (-) TimerEvent: {}
+[3.422427] (-) TimerEvent: {}
+[3.523013] (-) TimerEvent: {}
+[3.623705] (-) TimerEvent: {}
+[3.725043] (-) TimerEvent: {}
+[3.825730] (-) TimerEvent: {}
+[3.927265] (-) TimerEvent: {}
+[4.028058] (-) TimerEvent: {}
+[4.073755] (silver_interfaces) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 13.3.0\n'}
+[4.128285] (-) TimerEvent: {}
+[4.226411] (silver_interfaces) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[4.228453] (-) TimerEvent: {}
+[4.329248] (-) TimerEvent: {}
+[4.429898] (-) TimerEvent: {}
+[4.530570] (-) TimerEvent: {}
+[4.631277] (-) TimerEvent: {}
+[4.732096] (-) TimerEvent: {}
+[4.832902] (-) TimerEvent: {}
+[4.884093] (silver_interfaces) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[4.923549] (silver_interfaces) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[4.925843] (silver_interfaces) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[4.928501] (silver_interfaces) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[4.933038] (-) TimerEvent: {}
+[4.990052] (silver_interfaces) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[5.033250] (-) TimerEvent: {}
+[5.133959] (-) TimerEvent: {}
+[5.234657] (-) TimerEvent: {}
+[5.335487] (-) TimerEvent: {}
+[5.436237] (-) TimerEvent: {}
+[5.536947] (-) TimerEvent: {}
+[5.618076] (silver_interfaces) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[5.637144] (-) TimerEvent: {}
+[5.661562] (silver_interfaces) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[5.663223] (silver_interfaces) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[5.665177] (silver_interfaces) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[5.717593] (silver_interfaces) StdoutLine: {'line': b'-- Found ament_cmake: 2.5.4 (/opt/ros/jazzy/share/ament_cmake/cmake)\n'}
+[5.737260] (-) TimerEvent: {}
+[5.837867] (-) TimerEvent: {}
+[5.938624] (-) TimerEvent: {}
+[6.039495] (-) TimerEvent: {}
+[6.140468] (-) TimerEvent: {}
+[6.241338] (-) TimerEvent: {}
+[6.342574] (-) TimerEvent: {}
+[6.395279] (silver_interfaces) StdoutLine: {'line': b'-- Found Python3: /home/silver/silver_ws/venv/bin/python3 (found version "3.12.3") found components: Interpreter \n'}
+[6.442762] (-) TimerEvent: {}
+[6.543987] (-) TimerEvent: {}
+[6.644896] (-) TimerEvent: {}
+[6.745780] (-) TimerEvent: {}
+[6.847740] (-) TimerEvent: {}
+[6.948851] (-) TimerEvent: {}
+[7.050632] (-) TimerEvent: {}
+[7.151371] (-) TimerEvent: {}
+[7.252413] (-) TimerEvent: {}
+[7.353340] (-) TimerEvent: {}
+[7.401660] (silver_interfaces) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.17.2 (/opt/ros/jazzy/share/ament_lint_auto/cmake)\n'}
+[7.453549] (-) TimerEvent: {}
+[7.515689] (silver_interfaces) StderrLine: {'line': b'Traceback (most recent call last):\n'}
+[7.518732] (silver_interfaces) StderrLine: {'line': b'  File "/opt/ros/jazzy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py", line 22, in <module>\n'}
+[7.520054] (silver_interfaces) StderrLine: {'line': b'    from catkin_pkg.package import parse_package_string\n'}
+[7.521236] (silver_interfaces) StderrLine: {'line': b"ModuleNotFoundError: No module named 'catkin_pkg'\n"}
+[7.539174] (silver_interfaces) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/jazzy/share/ament_cmake_core/cmake/core/ament_package_xml.cmake:95 (message):\n'}
+[7.539810] (silver_interfaces) StderrLine: {'line': b'  execute_process(/home/silver/silver_ws/venv/bin/python3\n'}
+[7.541054] (silver_interfaces) StderrLine: {'line': b'  /opt/ros/jazzy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py\n'}
+[7.541611] (silver_interfaces) StderrLine: {'line': b'  /home/silver/silver_ws/src/silver_interfaces/package.xml\n'}
+[7.542075] (silver_interfaces) StderrLine: {'line': b'  /home/silver/silver_ws/src/build/silver_interfaces/ament_cmake_core/package.cmake)\n'}
+[7.542620] (silver_interfaces) StderrLine: {'line': b'  returned error code 1\n'}
+[7.543275] (silver_interfaces) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[7.543786] (silver_interfaces) StderrLine: {'line': b'  /opt/ros/jazzy/share/ament_cmake_core/cmake/core/ament_package_xml.cmake:49 (_ament_package_xml)\n'}
+[7.544406] (silver_interfaces) StderrLine: {'line': b'  /opt/ros/jazzy/share/ament_lint_auto/cmake/ament_lint_auto_find_test_dependencies.cmake:31 (ament_package_xml)\n'}
+[7.545270] (silver_interfaces) StderrLine: {'line': b'  CMakeLists.txt:23 (ament_lint_auto_find_test_dependencies)\n'}
+[7.546000] (silver_interfaces) StderrLine: {'line': b'\n'}
+[7.547012] (silver_interfaces) StderrLine: {'line': b'\x1b[0m\n'}
+[7.548520] (silver_interfaces) StdoutLine: {'line': b'-- Configuring incomplete, errors occurred!\n'}
+[7.553879] (-) TimerEvent: {}
+[7.566435] (silver_interfaces) JobEnded: {'identifier': 'silver_interfaces', 'rc': 'SIGINT'}
+[7.654363] (-) TimerEvent: {}
+[7.756233] (-) TimerEvent: {}
+[7.857539] (-) TimerEvent: {}
+[7.866712] (ltc2945) JobEnded: {'identifier': 'ltc2945', 'rc': 'SIGINT'}
+[7.869349] (bno055) JobEnded: {'identifier': 'bno055', 'rc': 'SIGINT'}
+[7.881017] (ms5837) JobSkipped: {'identifier': 'ms5837'}
+[7.881191] (ms8607) JobSkipped: {'identifier': 'ms8607'}
+[7.881293] (pan_tilt_camera) JobSkipped: {'identifier': 'pan_tilt_camera'}
+[7.881382] (silver) JobSkipped: {'identifier': 'silver'}
+[7.881470] (torches) JobSkipped: {'identifier': 'torches'}
+[7.881556] (dht11) JobSkipped: {'identifier': 'dht11'}
+[7.881641] (-) EventReactorShutdown: {}
