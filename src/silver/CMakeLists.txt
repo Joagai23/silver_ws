@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(silver)
+cmake_policy(SET CMP0009 NEW)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -47,9 +48,10 @@ install(
 )
 
 install(PROGRAMS
-  scripts/forward_position_publisher.py  scripts/position_trajectory_publisher.py
-  scripts/follow_joint_position_trajectory_action_client.py scripts/forward_position_publisher_silver.py
-  scripts/silver_follow_joint_position_trajectory_action.py scripts/trajectory_publisher.py
+  scripts/old_implementation/forward_position_publisher.py  scripts/old_implementation/position_trajectory_publisher.py
+  scripts/old_implementation/follow_joint_position_trajectory_action_client.py scripts/old_implementation/forward_position_publisher_silver.py
+  scripts/old_implementation/silver_follow_joint_position_trajectory_action.py scripts/old_implementation/trajectory_publisher.py
+  scripts/omnidirectional/cmd_vel_control_rotation.py scripts/omnidirectional/robot_def.py scripts/omnidirectional/robot.py 
   DESTINATION lib/${PROJECT_NAME}
 )
 
