@@ -42,7 +42,7 @@ class OmnidirectionalGaitController(Node):
 
         # Robot model and communication setup
         self.robot = robot.Robot()
-        self.Q_current = robot.static_poses_pos['dragon']
+        self.Q_current = robot.static_poses_pos['zero']
 
         self.joint_order = [
             'coxa_joint_0', 'femur_joint_0', 'tibia_joint_0',
@@ -149,6 +149,78 @@ class OmnidirectionalGaitController(Node):
 
             i += 1
 
+    def go_to_dragon_pose(self):
+        self.get_logger().info("Initializing: Moving to Dragon Pose safely in joint space...")
+
+        for _ in range(10):
+            rclpy.spin_once(self, timeout_sec=0.1)
+
+        Q_start = np.copy(self.Q_current)
+        Q_end = robot.static_poses_pos['dragon']
+
+        steps = 60
+        delay = 3.0 / steps 
+
+        for i in range(steps):
+            if should_quit:
+                break
+            alpha = (i + 1) / steps
+            Q_interp = Q_start * (1 - alpha) + Q_end * alpha
+
+            msg = Float64MultiArray()
+            msg.data = Q_interp.tolist()
+            self.pid_pos_publisher.publish(msg)
+            time.sleep(delay)
+
+        self.get_logger().info("Dragon Pose reached! Ready for /cmd_vel inputs.")
+
+    def go_to_dragon_pose_slow(self):
+        self.get_logger().info("Initializing: Moving to Dragon Pose ONE LEG AT A TIME...")
+
+        # Wait a moment to ensure we have received the actual physical joint states
+        for _ in range(10):
+            rclpy.spin_once(self, timeout_sec=0.1)
+
+        # Grab the current real-world starting positions
+        Q_current_tracker = np.copy(self.Q_current)
+        Q_target = robot.static_poses_pos['dragon']
+
+        # Loop through each of the 6 legs sequentially
+        for leg_id in range(6):
+            self.get_logger().info(f"Moving Leg {leg_id} to Dragon Pose...")
+            Q_start = np.copy(Q_current_tracker)
+            
+            # Move each leg over 1.5 seconds
+            steps = 30
+            delay = 1.5 / steps 
+
+            for i in range(steps):
+                if should_quit:
+                    break
+                alpha = (i + 1) / steps
+                
+                # Calculate the indices for the current leg (3 joints per leg)
+                idx_start = 3 * leg_id
+                idx_end = 3 * leg_id + 3
+                
+                # Interpolate ONLY the joints for the current leg
+                Q_interp = np.copy(Q_start)
+                Q_interp[idx_start:idx_end] = Q_start[idx_start:idx_end] * (1 - alpha) + Q_target[idx_start:idx_end] * alpha
+                
+                # Publish the array
+                msg = Float64MultiArray()
+                msg.data = Q_interp.tolist()
+                self.pid_pos_publisher.publish(msg)
+                time.sleep(delay)
+            
+            # Update our tracker so the next leg keeps this leg in its new position
+            Q_current_tracker = np.copy(Q_interp)
+            
+            # Pause for half a second before moving the next leg
+            time.sleep(0.5)
+
+        self.get_logger().info("Dragon Pose successfully reached! Ready for /cmd_vel inputs.")
+
 if __name__ == '__main__':
     rclpy.init()
     prevhand = signal.signal(signal.SIGINT, handler)
@@ -157,6 +229,8 @@ if __name__ == '__main__':
     except Exception as e:
         print(e)
         sys.exit(1)
+
+    gait_controller.go_to_dragon_pose_slow()
 
     gait_controller.omni_loop()
     rclpy.shutdown()

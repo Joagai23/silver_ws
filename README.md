@@ -1,62 +1,63 @@
-# Silver Robot Locomotion Bringup
+# Silver Robot Locomotion Testing Setup
 
-This package contains the control configurations and launch files to bring up the Silver robot's hardware interfaces, load the PID position controllers, and start the omnidirectional gait generator.
+This guide outlines the step-by-step terminal commands required to launch the SILVER2 robot's hardware interfaces, start the locomotion controller, and send test movement commands.
 
-## Prerequisites
-Ensure your workspace is built and sourced before running the commands below. Open a terminal in the root of your ROS 2 workspace and run:
+## Terminal 1: Core Bringup
+This terminal builds the workspace (if needed), activates the Python virtual environment, and launches the hardware controller manager.
 ```
-colcon build --packages-select silver
+# Navigate to your workspace (only if in a different directory)
+cd ~/silver_ws
+
+# Source the base ROS 2 Jazzy installation
+source /opt/ros/jazzy/setup.bash
+
+# (Optional) Build the workspace if you made recent changes
+colcon build
+
+# Activate the Python virtual environment
+source venv/bin/activate
+
+# Source the built workspace
 source install/setup.bash
-```
----
 
-## 1. Launching the Robot
-
-To start the robot's hardware, controller manager, and the custom locomotion node, run the main launch file:
-```
+# Launch the main hardware and controller sequence
 ros2 launch silver silver2.launch.py
 ```
 
-*Note: This terminal must remain open. The robot is now waiting for Twist commands on the /cmd_vel topic.*
+*Note: Wait for the controllers to fully load and activate before moving to Terminal 2.*
 
 ---
 
-## 2. Controlling the Robot
-
-Open a **new terminal**, source your workspace (`source install/setup.bash`), and choose one of the following methods to drive the robot:
-
-### Option A: Keyboard Control
-If you want to use your computer's arrow keys to send movement commands, install the keyboard teleop package (if you haven't already):
-
+## Terminal 2: Locomotion Node
+Once Terminal 1 is fully running, open a second terminal to start the custom locomotion script. This will initialize the robot's legs and move them into the starting "Dragon" pose.
 ```
-sudo apt install ros-jazzy-teleop-twist-keyboard
-```
+# Navigate to your workspace (only if in a different directory)
+cd ~/silver_ws
 
-Then run the node:
+# Source the ROS 2 environment
+source /opt/ros/jazzy/setup.bash
 
-```
-ros2 run teleop_twist_keyboard teleop_twist_keyboard
-```
+# Activate the virtual environment
+source venv/bin/activate
 
-Follow the on-screen instructions in the terminal to move forward/backward, strafe, and rotate.
-
-### Option B: Xbox Controller (Joystick)
-To use a physical Xbox controller, connect it via Bluetooth or USB to the machine you are running this command from. Install the joystick packages:
-
-```
-sudo apt install ros-jazzy-joy ros-jazzy-teleop-twist-joy
+# Run the locomotion controller script
+python3 ./src/silver/scripts/omnidirectional/cmd_vel_control_rotation.py
 ```
 
-Then, launch the joystick teleop node:
-
-```
-ros2 launch teleop_twist_joy teleop.launch.py joy_config:=xbox
-```
-
-**⚠️ IMPORTANT:** The Xbox controller has a "Dead Man's Switch" enabled by default for safety. **You must hold down the Enable Button (usually the 'A' button or Left Bumper)** while moving the joysticks, or the robot will not move.
+*Note: Wait for the robot to finish its initialization sequence before sending movement commands.*
 
 ---
 
-## Troubleshooting
-* **Robot not moving with Xbox controller:** Verify the controller is paired and recognized by Linux by running `ros2 topic echo /joy`. If numbers change when you move the sticks, the connection is good. Make sure you are holding the enable button!
-* **Controllers failing to load:** Ensure your real-world hardware is powered on and the USB/serial connections defined in your `robot.urdf.xacro` are plugged in and have the correct permissions (e.g., `sudo chmod 666 /dev/ttyUSB0`).
+## Terminal 3: Movement Commands
+With the robot awake and in its neutral pose, use this third terminal to send movement commands.
+
+```
+# Source the ROS 2 environment
+source /opt/ros/jazzy/setup.bash
+
+# Command the robot to walk forward (linear x: 0.5)
+ros2 topic pub --once /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.5, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}"
+
+# To stop the robot, send a command with all zeros
+ros2 topic pub --once /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}"
+```

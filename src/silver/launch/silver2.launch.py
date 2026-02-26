@@ -77,7 +77,7 @@ def generate_launch_description():
         rsp,
         joint_state_broadcaster_spawner,
         delayed_pid_position_controller_spawner,
-        delayed_locomotion_node
+        #delayed_locomotion_node
     ])
 
 
