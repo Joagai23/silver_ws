@@ -5,3 +5,4 @@ venv/
 
 # Ignore bno055
 src/bno055/
+*.pyc
