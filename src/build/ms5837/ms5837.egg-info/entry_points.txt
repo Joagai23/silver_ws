@@ -1,2 +1,0 @@
-[console_scripts]
-ms5837_node = ms5837.main:main
