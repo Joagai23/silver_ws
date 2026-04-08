@@ -30,7 +30,7 @@ def generate_launch_description():
 
     # Process xacro to URDF
     robot_description_content = Command(['xacro ', xacro_file,
-                                         ' use_sim_time:=', use_sim_time,
+                                         ' sim_mode:=', use_sim_time,
                                          ' use_ros2_control:=', use_ros2_control])
 
     # robot_state_publisher node
@@ -39,7 +39,7 @@ def generate_launch_description():
         executable='robot_state_publisher',
         name='robot_state_publisher',
         parameters=[{'robot_description': robot_description_content,
-                     'use_sim_time': use_sim_time}]
+                     'sim_mode': use_sim_time}]
     )
 
     return LaunchDescription([

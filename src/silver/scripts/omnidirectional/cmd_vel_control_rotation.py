@@ -25,8 +25,8 @@ class OmnidirectionalGaitController(Node):
         super().__init__('omnidirectional_gait_controller')
 
         # Fixed gait parameters
-        self.gait_width = 40.0
-        self.gait_height = 30.0
+        self.gait_width = 30.0 # 40
+        self.gait_height = 40.0 # 30
         self.step_length = 20.0
         self.duty_cycle = 0.6
         self.ground_clearance = 10.0
