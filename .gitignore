@@ -1,4 +1,7 @@
-*/build
-*/install
-*/log
-*/venv
+build/
+install/
+log/
+venv/
+
+# Ignore bno055
+src/bno055/
