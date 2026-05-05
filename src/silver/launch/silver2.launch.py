@@ -25,8 +25,8 @@ def generate_launch_description():
     pkg_name = 'silver'
 
     # Detect Hardware
-    working_legs = get_active_legs()
-    print(f"Launching SILVER2 with active legs: {working_legs}")
+    active_legs = get_active_legs()
+    print(f"Launching SILVER2 with active legs: {active_legs}")
 
     # Process robot description
     xacro_file = os.path.join(get_package_share_directory(pkg_name), 'description', 'silver.xacro')
