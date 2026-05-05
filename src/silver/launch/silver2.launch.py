@@ -1,4 +1,5 @@
 import os
+import sys
 import xacro
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -7,10 +8,25 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.event_handlers import OnProcessExit
 from launch_ros.actions import Node
 
+# --- Hardware Detection Logic ---
+sys.path.append('/home/silver/silver_ws/src/dynamixel/debug_scripts')
+try:
+    from dynamixel_controller import get_hardware_status
+except ImportError:
+    print(f"ERROR: Could not import from dynamixel_controller.py: {e}")
+    def get_hardware_status(): return []
+
+def get_active_legs():
+    return get_hardware_status()
+
 def generate_launch_description():
 
     # Specify the name of the package
     pkg_name = 'silver'
+
+    # Detect Hardware
+    working_legs = get_active_legs()
+    print(f"Launching SILVER2 with active legs: {working_legs}")
 
     # Process robot description
     xacro_file = os.path.join(get_package_share_directory(pkg_name), 'description', 'silver.xacro')
