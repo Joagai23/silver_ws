@@ -25,7 +25,7 @@ def generate_launch_description():
     # Configure nodes
     rsp = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory(pkg_name),'launch','rsp_silver.launch.py'
+                    get_package_share_directory(pkg_name),'launch','rsp.launch.py'
                 )]), launch_arguments={'use_sim_time': 'true', 'use_ros2_control': 'true'}.items()
     )
     

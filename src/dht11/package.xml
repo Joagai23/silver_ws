@@ -2,17 +2,19 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>dht11</name>
-  <version>0.0.0</version>
-  <description>ROS2 node to read and publish data from the temperature and humidity sensor dht11</description>
-  <maintainer email="giacomo.picardi1991@gmail.com">silvercore</maintainer>
-  <license>TODO: License declaration</license>
+  <version>1.0.0</version>
+  <description>ROS 2 node to read and publish data from multiple DHT11 temperature and humidity sensors</description>
+  <maintainer email="jaguirregomezcorta@icm.csic.es">Jorge Aguirregomezcorta Aina</maintainer>
+  <author email="giacomo.picardi1991@gmail.com">Giacomo Picardi</author>
+  <license>Apache-2.0</license>
+
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>silver_interfaces</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>
   <test_depend>python3-pytest</test_depend>
-
-  <exec_depend>silver_interfaces</exec_depend>
 
   <export>
     <build_type>ament_python</build_type>

@@ -6,26 +6,23 @@ package_name = 'dht11'
 
 setup(
     name=package_name,
-    version='0.0.0',
+    version='1.0.0',
     packages=find_packages(exclude=['test']),
     data_files=[
-        ('share/ament_index/resource_index/packages',
-            ['resource/' + package_name]),
+        ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-         # Include the launch directory
         (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='silvercore',
-    maintainer_email='giacomo.picardi1991@gmail.com',
-    description='ROS2 node to read and publish data from the temperature and humidity sensor dht11',
-    license='TODO: License declaration',
+    maintainer='Giacomo Picardi',
+    maintainer_email='gpicardi@icm.csic.es',
+    description='ROS 2 node to read and publish data from multiple DHT11 temperature and humidity sensors',
+    license='Apache-2.0',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-        'dht11 = dht11.dht11_parallel_reads:main',
-        'dht11_s = dht11.dht11_singlesensor:main'
+            'dht11_node = dht11.dht11_node:main',
         ],
     },
 )
