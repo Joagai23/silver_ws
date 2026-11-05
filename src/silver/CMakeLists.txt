@@ -40,6 +40,7 @@ install(PROGRAMS
   scripts/omnidirectional/cmd_vel_control_rotation.py
   scripts/omnidirectional/robot_def.py
   scripts/omnidirectional/robot.py
+  scripts/dynamixel/reboot_servos.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
