@@ -30,16 +30,15 @@ endif()
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})
 
-#install python executables
+# Install directories
 install(
   DIRECTORY config description launch scripts
   DESTINATION share/${PROJECT_NAME}
 )
 
+# Install executable scripts
 install(PROGRAMS
-  scripts/omnidirectional/cmd_vel_control_rotation.py
-  scripts/omnidirectional/robot_def.py
-  scripts/omnidirectional/robot.py
+  scripts/locomotion_manager.py
   scripts/dynamixel/reboot_servos.py
   DESTINATION lib/${PROJECT_NAME}
 )
