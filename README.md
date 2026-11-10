@@ -4,12 +4,22 @@ Repository for controlling the **SILVER2** 18-DOF underwater hexapod robot.
 
 ---
 
+## 0. Clone the Repository
+Clone the repository into your ROS 2 workspace source directory:
+```bash
+cd ~/Code_Directory
+git clone https://github.com/Joagai23/silver_ws.git
+cd ~/silver_ws
+```
+
+---
+
 ## 1. Python Virtual Environment Setup
 
 From the root of the workspace (`silver_ws`), create a Python virtual environment named `venv` (using `--system-site-packages` so it retains access to ROS 2 system packages):
 
 ```bash
-cd ~/Documents/Code/silver_ws
+cd ~/Code_Directory/silver_ws
 python3 -m venv venv --system-site-packages
 ```
 
@@ -19,16 +29,6 @@ Prevent `colcon build` from scanning the virtual environment and ensure Git igno
 ```bash
 # Tell colcon to ignore the virtual environment
 touch venv/COLCON_IGNORE
-
-# Add venv and colcon build directories to .gitignore
-cat <<EOT >> .gitignore
-venv/
-build/
-install/
-log/
-__pycache__/
-*.pyc
-EOT
 ```
 
 ### Activate the Virtual Environment & Install Dependencies
