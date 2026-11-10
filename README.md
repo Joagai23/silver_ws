@@ -1,63 +1,56 @@
-# Silver Robot Locomotion Testing Setup
+# SILVER2 ROS 2 Workspace
 
-This guide outlines the step-by-step terminal commands required to launch the SILVER2 robot's hardware interfaces, start the locomotion controller, and send test movement commands.
-
-## Terminal 1: Core Bringup
-This terminal builds the workspace (if needed), activates the Python virtual environment, and launches the hardware controller manager.
-```
-# Navigate to your workspace (only if in a different directory)
-cd ~/silver_ws
-
-# Source the base ROS 2 Jazzy installation
-source /opt/ros/jazzy/setup.bash
-
-# (Optional) Build the workspace if you made recent changes
-colcon build
-
-# Activate the Python virtual environment
-source venv/bin/activate
-
-# Source the built workspace
-source install/setup.bash
-
-# Launch the main hardware and controller sequence
-ros2 launch silver silver2.launch.py
-```
-
-*Note: Wait for the controllers to fully load and activate before moving to Terminal 2.*
+Repository for controlling the **SILVER2** 18-DOF underwater hexapod robot.
 
 ---
 
-## Terminal 2: Locomotion Node
-Once Terminal 1 is fully running, open a second terminal to start the custom locomotion script. This will initialize the robot's legs and move them into the starting "Dragon" pose.
+## 1. Python Virtual Environment Setup
+
+From the root of the workspace (`silver_ws`), create a Python virtual environment named `venv` (using `--system-site-packages` so it retains access to ROS 2 system packages):
+
+```bash
+cd ~/Documents/Code/silver_ws
+python3 -m venv venv --system-site-packages
 ```
-# Navigate to your workspace (only if in a different directory)
-cd ~/silver_ws
 
-# Source the ROS 2 environment
-source /opt/ros/jazzy/setup.bash
+### Add `COLCON_IGNORE` and `.gitignore`
+Prevent `colcon build` from scanning the virtual environment and ensure Git ignores both the `venv` and ROS 2 build artifacts:
 
-# Activate the virtual environment
+```bash
+# Tell colcon to ignore the virtual environment
+touch venv/COLCON_IGNORE
+
+# Add venv and colcon build directories to .gitignore
+cat <<EOT >> .gitignore
+venv/
+build/
+install/
+log/
+__pycache__/
+*.pyc
+EOT
+```
+
+### Activate the Virtual Environment & Install Dependencies
+Activate `venv` and install the Dynamixel SDK:
+
+```bash
 source venv/bin/activate
-
-# Run the locomotion controller script
-python3 ./src/silver/scripts/omnidirectional/cmd_vel_control_rotation.py
+pip install dynamixel-sdk
 ```
-
-*Note: Wait for the robot to finish its initialization sequence before sending movement commands.*
 
 ---
 
-## Terminal 3: Movement Commands
-With the robot awake and in its neutral pose, use this third terminal to send movement commands.
+## 2. Rebooting the Dynamixel Servos
 
+To safely reboot all 18 Dynamixel servos on the serial bus (`/dev/ttyUSB0`), run the reboot utility script from the workspace root:
+
+```bash
+python3 src/silver/scripts/dynamixel/reboot_servos.py
 ```
-# Source the ROS 2 environment
-source /opt/ros/jazzy/setup.bash
 
-# Command the robot to walk forward (linear x: 0.5)
-ros2 topic pub --once /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.5, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}"
+*(Optional)* If you are testing on a workstation without the physical robot connected, pass the `--dry-run` flag:
 
-# To stop the robot, send a command with all zeros
-ros2 topic pub --once /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}"
+```bash
+python3 src/silver/scripts/dynamixel/reboot_servos.py --dry-run
 ```
