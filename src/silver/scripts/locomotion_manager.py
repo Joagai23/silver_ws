@@ -40,9 +40,11 @@ class SilverLocomotionManager(Node):
         self.declare_parameter('controller_type', 'cpg')        # 'cpg', 'odg'
         self.declare_parameter('gait_type', 'tripod')           # 'tripod', 'tetrapod', 'wave'
         self.declare_parameter('control_rate', 50.0)            # Hz (dt = 0.02s)
+        self.declare_parameter('startup_pose', True)            # Smoothly interpolate to standing pose on boot
+
+        # --- Declare Locomotion Parameters ---
         self.declare_parameter('gait_period', 2.0)              # Seconds
         self.declare_parameter('step_height', 0.05)             # Meters
-        self.declare_parameter('startup_pose', True)            # Smoothly interpolate to standing pose on boot
 
         self.controller_type = self.get_parameter('controller_type').value
         self.gait_type = self.get_parameter('gait_type').value

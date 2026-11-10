@@ -19,11 +19,11 @@ from dynamixel_sdk import (
 
 # --- Bus Configuration ---
 DEVICENAME: str = "/dev/ttyUSB0"
-BAUDRATE: int = 57600
+BAUDRATE: int = 1000000
 PROTOCOL_VERSION: float = 2.0
 
-# Target IDs: 18 actuators (IDs 1 through 18)
-TARGET_IDS: List[int] = list(range(1, 19))
+# Target IDs: 18 actuators (IDs 0 through 17)
+TARGET_IDS: List[int] = list(range(0, 18))
 
 # --- Initialization ---
 portHandler = PortHandler(DEVICENAME)
