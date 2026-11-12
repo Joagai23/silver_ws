@@ -39,6 +39,7 @@ install(
 # Install executable scripts
 install(PROGRAMS
   scripts/locomotion_manager.py
+  scripts/sensor_logger.py
   scripts/dynamixel/reboot_servos.py
   DESTINATION lib/${PROJECT_NAME}
 )

@@ -1,0 +1,10 @@
+click==8.5.0
+deptry==0.25.1
+dynamixel-sdk==4.1.0
+numpy==2.5.4
+packaging==26.3
+pyserial==3.5
+requirements-parser==0.13.1
+tomli==2.5.0
+vulture==2.16
+warp==1.0.4
