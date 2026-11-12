@@ -1,33 +1,22 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.conditions import IfCondition
+from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
-
 def generate_launch_description():
-    # Launch arguments to toggle sensors
-    use_imu_arg = DeclareLaunchArgument(
-        'use_imu', default_value='true', description='Launch BNO055 IMU node'
-    )
-    use_dht11_arg = DeclareLaunchArgument(
-        'use_dht11', default_value='true', description='Launch DHT11 humidity/temp nodes'
-    )
-
-    use_imu = LaunchConfiguration('use_imu')
-    use_dht11 = LaunchConfiguration('use_dht11')
-
-    # 1. SILVER2 Locomotion & ros2_control
+    
+    # SILVER2 Locomotion & ros2_control
     silver_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('silver'), 'launch', 'silver2.launch.py')
         )
     )
 
-    # 2. BNO055 IMU Node
+    # --- I2C-1 Sensors ---
+
+    # BNO055 IMU
     bno055_config = os.path.join(
         get_package_share_directory('bno055'), 'config', 'bno055_params_i2c.yaml'
     )
@@ -36,21 +25,43 @@ def generate_launch_description():
         executable='bno055',
         parameters=[bno055_config],
         output='screen',
-        condition=IfCondition(use_imu),
     )
 
-    # 3. DHT11 Humidity & Temperature Nodes
-    dht11_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('dht11'), 'launch', 'dht11_launch.py')
-        ),
-        condition=IfCondition(use_dht11),
+    # MS5837 External Depth Sensor (0x76 on i2c-1)
+    ms5837_node = Node(
+        package='ms5837',
+        executable='ms5837',
+        output='screen',
     )
+
+    # --- I2C-0 Sensors ---
+
+    # LTC2945 Battery Node (0x67 on i2c-0)
+    ltc2945_node = Node(
+        package="ltc2945",
+        executable="ltc2945",
+        output='screen'
+    )
+
+    # MS8607 Pressure-Temperature-Humidity Node (0x76, 0x40 on i2c-0)
+    ms8607_i2c0_node = Node(
+        package='ms8607',
+        executable='ms8607_i2c0',
+        output='screen',
+    )
+
+    # NOTE: ms8607_i2c1 shares 0x76 on i2c-1 with ms5837.
+    # Leave disabled if ms5837 is connected on i2c-1.
+    # ms8607_i2c1_node = Node(
+    #     package='ms8607',
+    #     executable='ms8607_i2c1',
+    #     output='screen',
+    # )
 
     return LaunchDescription([
-        use_imu_arg,
-        use_dht11_arg,
         silver_launch,
         bno055_node,
-        dht11_launch,
+        ltc2945_node,
+        ms5837_node,
+        ms8607_i2c0_node
     ])
