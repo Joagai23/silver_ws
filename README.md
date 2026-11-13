@@ -63,7 +63,7 @@ To ping all 18 motors (IDs ```0``` to ```17```, grouped into Legs ```0```–```5
 python3 src/dynamixel/debug_scripts/dynamixel_controller.py
 ```
 
-## Launching the Robot & Sensors
+## 3. Launching the Robot & Sensors
 ### Option A: Launch Sensors Only (Telemetry & Battery Test)
 Use this mode to monitor the battery, internal canister humidity/pressure, external depth, and IMU without starting ```ros2_control``` or powering the 18 Dynamixel actuators:
 ```bash
