@@ -131,7 +131,7 @@ class SilverSensorLogger(Node):
         if hasattr(self, 'csv_file') and not self.csv_file.closed:
             self.csv_file.flush()
             self.csv_file.close()
-            self.get_logger().info(f"Saved sensor log to {self.csv_path}")
+            print(f"[INFO] [silver_sensor_logger]: Saved sensor log to {self.csv_path}")
 
 
 def main(args=None):

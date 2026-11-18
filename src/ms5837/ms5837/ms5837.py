@@ -54,11 +54,15 @@ class Ms5837Node(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    ms5837_publisher = Ms5837Node()
-    rclpy.spin(ms5837_publisher)
-
-    ms5837_publisher.destroy_node()
-    rclpy.shutdown()
+    node = Ms5837Node()
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        node.destroy_node()
+        if rclpy.ok():
+            rclpy.shutdown()
 
 
 if __name__ == '__main__':
