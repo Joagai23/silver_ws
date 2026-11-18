@@ -41,7 +41,7 @@ class SilverLocomotionManager(Node):
         self.declare_parameter('gait_type', 'tripod')           # 'tripod', 'tetrapod', 'wave'
         self.declare_parameter('control_rate', 50.0)            # Hz (dt = 0.02s)
         self.declare_parameter('startup_pose', True)            # Smoothly interpolate to standing pose on boot
-        self.declare_parameter('synchronized_startup', False)   # Synchronize startup pose with all legs at the same time
+        self.declare_parameter('synchronized_startup', True)   # Synchronize startup pose with all legs at the same time
 
         # --- Declare Locomotion Parameters ---
         self.declare_parameter('gait_period', 2.0)              # Seconds
