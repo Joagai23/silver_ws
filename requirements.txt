@@ -8,3 +8,4 @@ requirements-parser==0.13.1
 tomli==2.5.0
 vulture==2.16
 warp==1.0.4
+cython==3.3.1
