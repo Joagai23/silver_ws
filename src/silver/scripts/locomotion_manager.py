@@ -41,6 +41,7 @@ class SilverLocomotionManager(Node):
         self.declare_parameter('gait_type', 'tripod')           # 'tripod', 'tetrapod', 'wave'
         self.declare_parameter('control_rate', 50.0)            # Hz (dt = 0.02s)
         self.declare_parameter('startup_pose', True)            # Smoothly interpolate to standing pose on boot
+        self.declare_parameter('synchronized_startup', False)   # Synchronize startup pose with all legs at the same time
 
         # --- Declare Locomotion Parameters ---
         self.declare_parameter('gait_period', 2.0)              # Seconds
@@ -88,7 +89,12 @@ class SilverLocomotionManager(Node):
 
         # Optional sequential startup transition to standing pose
         if self.get_parameter('startup_pose').value:
-            self.move_to_standing_pose_slow()
+            if self.get_parameter('synchronized_startup').value:
+                # Sync standing
+                self.move_to_standing_pose()
+            else:
+                # Slow standing
+                self.move_to_standing_pose_slow()
 
         # --- Start Control Timer ---
         self.timer = self.create_timer(self.dt, self._control_loop)
@@ -174,6 +180,28 @@ class SilverLocomotionManager(Node):
             q_tracker = np.copy(q_interp)
             time.sleep(0.3)
 
+        self.get_logger().info("Standing pose reached. Listening for /cmd_vel...")
+
+    def move_to_standing_pose(self):
+        self.get_logger().info("Waiting for /joint_states before moving to standing pose...")
+        while rclpy.ok() and not self.joint_states_received:
+            rclpy.spin_once(self, timeout_sec=0.1)
+        if not rclpy.ok():
+            return
+
+        q_start = np.copy(self.q_current)
+        q_target_deg = SILVER2_STANDING_ANGLES_DEG * self.isaac_robot_signs
+        q_target = np.deg2rad(q_target_deg.flatten())
+        steps = 30
+        self.get_logger().info("Interpolating all legs to standing configuration...")
+
+        for s in range(steps):
+            alpha = (s + 1) / steps
+            q_interp = (1.0 - alpha) * q_start + alpha * q_target
+            self._publish_joints(q_interp)
+            time.sleep(1.5 / steps)
+
+        time.sleep(0.3)
         self.get_logger().info("Standing pose reached. Listening for /cmd_vel...")
 
     # --- Main Real-Time Control Loop ---

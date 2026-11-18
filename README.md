@@ -57,12 +57,6 @@ ros2 run silver reboot_servos.py
 python3 src/silver/scripts/dynamixel/reboot_servos.py
 ```
 
-### Check Active Legs & Motor Status
-To ping all 18 motors (IDs ```0``` to ```17```, grouped into Legs ```0```–```5```) and verify which legs are online before launching ```ros2_control```:
-```bash
-python3 src/dynamixel/debug_scripts/dynamixel_controller.py
-```
-
 ## 3. Launching the Robot & Sensors
 ### Option A: Launch Sensors Only (Telemetry & Battery Test)
 Use this mode to monitor the battery, internal canister humidity/pressure, external depth, and IMU without starting ```ros2_control``` or powering the 18 Dynamixel actuators:
