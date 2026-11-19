@@ -47,14 +47,14 @@ source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 ```
 
-## 2. Rebooting the Dynamixel Servos
+## 2. Rebooting the Dynamixel Servos and Logging Voltage & Current Table
 To safely issue a Protocol 2.0 reboot across all 18 Dynamixel servos on the RS485 serial bus (```/dev/ttyUSB0``` at ```1000000``` bps):
 ```bash
-# Via ROS 2 executable
+# Reboot all 18 servos and print Voltage & Current table
 ros2 run silver reboot_servos.py
 
-# Or directly via Python
-python3 src/silver/scripts/dynamixel/reboot_servos.py
+# Check Voltage & Current only (no reboot)
+ros2 run silver reboot_servos.py --check-only
 ```
 
 ## 3. Launching the Robot & Sensors
