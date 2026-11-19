@@ -55,7 +55,7 @@ def generate_launch_description():
         output='screen',
     )
 
-    # 3. I2C-0 Sensors (LTC2945 Battery Monitor + MS8607 Battery Canister P/T/RH)
+    # 3. I2C-0 Sensors (LTC2945 Battery Monitor + MS8607 Battery Canister + DHT11 Canister)
     ltc2945_node = Node(
         package="ltc2945",
         executable="ltc2945",
@@ -68,7 +68,14 @@ def generate_launch_description():
         output='screen',
     )
 
-    # 4. CSV Sensor Logger Node
+    # 4. GPIO Sensors (DHT11 Canister Temp/Humidity)
+    dht11_node = Node(
+        package='dht11',
+        executable='dht11',
+        output='screen',
+    )
+
+    # 5. CSV Sensor Logger Node
     sensor_logger_node = Node(
         package='silver',
         executable='sensor_logger.py',
@@ -86,5 +93,6 @@ def generate_launch_description():
         ms5837_node,
         ltc2945_node,
         ms8607_i2c0_node,
+        dht11_node,
         sensor_logger_node,
     ])

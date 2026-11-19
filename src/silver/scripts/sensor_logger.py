@@ -8,7 +8,7 @@ from datetime import datetime
 
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Float64, String
+from std_msgs.msg import Float64, Float64MultiArray, String
 from sensor_msgs.msg import Imu, Temperature
 
 
@@ -62,6 +62,11 @@ class SilverSensorLogger(Node):
             'imu_calib': '',
         }
 
+        self.dht_pins = [5, 6, 17, 22, 23, 26, 27]
+        for pin in self.dht_pins:
+            self.data[f'dht_g{pin}_T_C'] = float('nan')
+            self.data[f'dht_g{pin}_RH_pct'] = float('nan')
+
         # --- Subscriptions ---
         # LTC2945 Battery Monitor (i2c-0)
         self.create_subscription(Float64, '/ltc2945/vin', lambda m: self._set('vin_V', m.data), 10)
@@ -82,6 +87,10 @@ class SilverSensorLogger(Node):
         self.create_subscription(Imu, '/bno055/imu', self._imu_cb, 10)
         self.create_subscription(Temperature, '/bno055/temp', lambda m: self._set('imu_T_C', m.temperature), 10)
         self.create_subscription(String, '/bno055/calib_status', lambda m: self._set('imu_calib', m.data), 10)
+
+        # DHT11 Canister Temp/Humidity (7 GPIO pins)
+        self.create_subscription(Float64MultiArray, '/dht11/temperature', self._dht_temp_cb, 10)
+        self.create_subscription(Float64MultiArray, '/dht11/humidity', self._dht_hum_cb, 10)
 
         # Open CSV and write header
         self.csv_file = open(self.csv_path, mode='w', newline='', encoding='utf-8')
@@ -104,6 +113,14 @@ class SilverSensorLogger(Node):
         self.data['imu_roll_deg'] = round(r, 2)
         self.data['imu_pitch_deg'] = round(p, 2)
         self.data['imu_yaw_deg'] = round(y, 2)
+
+    def _dht_temp_cb(self, msg: Float64MultiArray):
+        for pin, val in zip(self.dht_pins, msg.data):
+            self.data[f'dht_g{pin}_T_C'] = val
+
+    def _dht_hum_cb(self, msg: Float64MultiArray):
+        for pin, val in zip(self.dht_pins, msg.data):
+            self.data[f'dht_g{pin}_RH_pct'] = val
 
     def _log_row(self):
         now = self.get_clock().now()

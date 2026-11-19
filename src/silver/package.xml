@@ -25,6 +25,7 @@
   <exec_depend>ltc2945</exec_depend>
   <exec_depend>ms5837</exec_depend>
   <exec_depend>ms8607</exec_depend>
+  <exec_depend>dht11</exec_depend>
 
   <!-- Python System Dependencies -->
   <exec_depend>python3-numpy</exec_depend>
