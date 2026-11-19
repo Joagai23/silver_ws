@@ -102,7 +102,8 @@ ros2 run silver locomotion_manager.py --ros-args \
   -p gait_type:=tripod \
   -p gait_period:=2.0 \
   -p step_height:=0.05 \
-  -p startup_pose:=true
+  -p startup_pose:=true \
+  -p synchronized_startup:=true
 ```
 
 ### Sending Velocity Commands (```/cmd_vel```)
