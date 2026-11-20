@@ -8,8 +8,11 @@ MS8607_ADDR = 0x76
 MS8607_ADDR_HUMIDITY = 0x40
 RESET_OFF = 0x1E
 
-# Relative humidity rise threshold (%) above startup baseline to flag a potential leak
-RH_RISE_WARN_THRESHOLD = 5.0
+# Relative humidity rise threshold (%) above startup baseline (X + 10)
+RH_RISE_WARN_THRESHOLD = 10.0
+
+RED_BG = "\033[1;97;41m"
+RESET = "\033[0m"
 
 class Ms8607Node(Node):
     
@@ -66,9 +69,8 @@ class Ms8607Node(Node):
                 )
             elif (humidity - self.initial_humidity) >= RH_RISE_WARN_THRESHOLD:
                 self.get_logger().warn(
-                    f"CANISTER HUMIDITY RISING: {humidity:.2f}% "
-                    f"(+{humidity - self.initial_humidity:.2f}% above baseline {self.initial_humidity:.2f}%)! "
-                    f"Check for water ingress.",
+                    f"{RED_BG} BATTERY CANISTER HUMIDITY RISE (+10%): {humidity:.2f}% "
+                    f"(+{humidity - self.initial_humidity:.2f}% above {self.initial_humidity:.2f}%) {RESET}",
                     throttle_duration_sec=5.0,
                 )
 

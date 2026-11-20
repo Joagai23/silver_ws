@@ -9,8 +9,7 @@ from datetime import datetime
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float64, Float64MultiArray, String
-from sensor_msgs.msg import Imu, Temperature
-
+from sensor_msgs.msg import Imu, JointState, Temperature
 
 def quat_to_euler_deg(x: float, y: float, z: float, w: float):
     """Convert quaternion (x, y, z, w) to Roll, Pitch, Yaw in degrees."""
@@ -26,7 +25,6 @@ def quat_to_euler_deg(x: float, y: float, z: float, w: float):
     yaw = math.atan2(siny_cosp, cosy_cosp)
 
     return math.degrees(roll), math.degrees(pitch), math.degrees(yaw)
-
 
 class SilverSensorLogger(Node):
 
@@ -67,6 +65,11 @@ class SilverSensorLogger(Node):
             self.data[f'dht_g{pin}_T_C'] = float('nan')
             self.data[f'dht_g{pin}_RH_pct'] = float('nan')
 
+        self.num_joints = 18
+        self.joint_names_logged = False
+        for i in range(self.num_joints):
+            self.data[f'eff_{i:02d}'] = float('nan')
+
         # --- Subscriptions ---
         # LTC2945 Battery Monitor (i2c-0)
         self.create_subscription(Float64, '/ltc2945/vin', lambda m: self._set('vin_V', m.data), 10)
@@ -92,6 +95,9 @@ class SilverSensorLogger(Node):
         self.create_subscription(Float64MultiArray, '/dht11/temperature', self._dht_temp_cb, 10)
         self.create_subscription(Float64MultiArray, '/dht11/humidity', self._dht_hum_cb, 10)
 
+        # Joint States (per-servo effort / current from ros2_control)
+        self.create_subscription(JointState, '/joint_states', self._joint_state_cb, 10)
+
         # Open CSV and write header
         self.csv_file = open(self.csv_path, mode='w', newline='', encoding='utf-8')
         self.fieldnames = ['timestamp_iso', 'elapsed_s'] + list(self.data.keys())
@@ -116,11 +122,22 @@ class SilverSensorLogger(Node):
 
     def _dht_temp_cb(self, msg: Float64MultiArray):
         for pin, val in zip(self.dht_pins, msg.data):
-            self.data[f'dht_g{pin}_T_C'] = val
+            if not math.isnan(val):
+                self.data[f'dht_g{pin}_T_C'] = val
 
     def _dht_hum_cb(self, msg: Float64MultiArray):
         for pin, val in zip(self.dht_pins, msg.data):
-            self.data[f'dht_g{pin}_RH_pct'] = val
+            if not math.isnan(val):
+                self.data[f'dht_g{pin}_RH_pct'] = val
+
+    def _joint_state_cb(self, msg: JointState):
+        if not self.joint_names_logged and msg.name:
+            mapping = ", ".join(f"{i:02d}:{name}" for i, name in enumerate(msg.name))
+            self.get_logger().info(f"Joint effort mapping -> {mapping}")
+            self.joint_names_logged = True
+
+        for i, val in enumerate(msg.effort[:self.num_joints]):
+            self.data[f'eff_{i:02d}'] = float(val)
 
     def _log_row(self):
         now = self.get_clock().now()
@@ -141,6 +158,33 @@ class SilverSensorLogger(Node):
             f"Canister: {self.data['canister_RH_pct']:.1f}% RH, {self.data['canister_T_C']:.1f}C, {self.data['canister_P_mbar']:.0f}mbar | "
             f"Depth: {self.data['ext_depth_m']:.2f}m ({self.data['ext_T_C']:.1f}C) | "
             f"RPY: ({self.data['imu_roll_deg']:.1f}, {self.data['imu_pitch_deg']:.1f}, {self.data['imu_yaw_deg']:.1f}) deg",
+            throttle_duration_sec=2.0,
+        )
+
+        dht_parts = []
+        for pin in self.dht_pins:
+            rh = self.data[f'dht_g{pin}_RH_pct']
+            t = self.data[f'dht_g{pin}_T_C']
+            rh_s = f"{rh:.0f}%" if not math.isnan(rh) else "--"
+            t_s = f"{t:.1f}C" if not math.isnan(t) else "--"
+            dht_parts.append(f"G{pin}:{rh_s}/{t_s}")
+
+        self.get_logger().info(
+            f"[{elapsed:6.1f}s] DHT11: " + " | ".join(dht_parts),
+            throttle_duration_sec=2.0,
+        )
+
+        eff_parts = []
+        for leg in range(6):
+            vals = [self.data[f'eff_{leg * 3 + j:02d}'] for j in range(3)]
+            if all(math.isnan(v) for v in vals):
+                eff_parts.append(f"L{leg}:--")
+            else:
+                v_str = "/".join(f"{v:.2f}" if not math.isnan(v) else "--" for v in vals)
+                eff_parts.append(f"L{leg}:{v_str}")
+
+        self.get_logger().info(
+            f"[{elapsed:6.1f}s] Effort: " + " | ".join(eff_parts),
             throttle_duration_sec=2.0,
         )
 

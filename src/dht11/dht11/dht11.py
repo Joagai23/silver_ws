@@ -16,6 +16,15 @@ DHT_PINS = [
     (27, board.D27),
 ]
 
+# Safety thresholds for canister monitoring
+DHT_RH_RISE_WARN = 10.0  # % RH rise above startup baseline (X + 10)
+DHT_TEMP_WARN = 50.0     # °C internal canister overtemperature warning
+
+# ANSI terminal colors
+RED_BG = "\033[1;97;41m"   # Bold white text on red background
+YELLOW = "\033[1;33m"      # Bold yellow text
+RESET = "\033[0m"
+
 class Dht11Node(Node):
 
 	def __init__(self):
@@ -37,6 +46,8 @@ class Dht11Node(Node):
 			Float64MultiArray, '/dht11/humidity', 10
 		)
 
+		self.initial_humidities = {}
+
 		# DHT11 hardware minimum sampling period is 1.0s (2.0s is more reliable)
 		self.timer = self.create_timer(2.0, self.timer_callback)
 		self.get_logger().info(
@@ -44,34 +55,65 @@ class Dht11Node(Node):
 		)
 		
 	def timer_callback(self):
-		temperatures = []
-		humidities = []
+        temperatures = []
+        humidities = []
+        leak_warnings = []
+        temp_warnings = []
 
-		for pin_num, sensor in self.sensors:
-			if sensor is None:
-				temperatures.append(float('nan'))
-				humidities.append(float('nan'))
-				continue
+        for pin_num, sensor in self.sensors:
+            if sensor is None:
+                temperatures.append(float('nan'))
+                humidities.append(float('nan'))
+                continue
 
-			try:
-				t = sensor.temperature
-				h = sensor.humidity
-				temperatures.append(float(t) if t is not None else float('nan'))
-				humidities.append(float(h) if h is not None else float('nan'))
-			except RuntimeError:
-				temperatures.append(float('nan'))
-				humidities.append(float('nan'))
-			except Exception as e:
-				self.get_logger().warn(
-					f"DHT11 GPIO {pin_num} error: {e}", throttle_duration_sec=10.0
-				)
-				temperatures.append(float('nan'))
-				humidities.append(float('nan'))
+            try:
+                t = sensor.temperature
+                h = sensor.humidity
+                t_val = float(t) if t is not None else float('nan')
+                h_val = float(h) if h is not None else float('nan')
+                temperatures.append(t_val)
+                humidities.append(h_val)
 
-		temp_msg = Float64MultiArray(data=temperatures)
-		hum_msg = Float64MultiArray(data=humidities)
-		self.temperature_publisher_.publish(temp_msg)
-		self.humidity_publisher_.publish(hum_msg)
+                # Track baseline X and warn only if RH >= X + 10
+                if h is not None:
+                    if pin_num not in self.initial_humidities:
+                        self.initial_humidities[pin_num] = h_val
+                        self.get_logger().info(
+                            f"DHT11 GPIO {pin_num} baseline recorded: RH0 = {h_val:.1f}% | T0 = {t_val:.1f} C"
+                        )
+                    else:
+                        rh0 = self.initial_humidities[pin_num]
+                        if (h_val - rh0) >= DHT_RH_RISE_WARN:
+                            leak_warnings.append(
+                                f"GPIO {pin_num}: {h_val:.1f}% (+{h_val - rh0:.1f}% above {rh0:.1f}%)"
+                            )
+
+                if t is not None and t_val >= DHT_TEMP_WARN:
+                    temp_warnings.append(f"GPIO {pin_num}: {t_val:.1f} C (>= {DHT_TEMP_WARN:.0f} C)")
+
+            except RuntimeError:
+                temperatures.append(float('nan'))
+                humidities.append(float('nan'))
+            except Exception as e:
+                self.get_logger().warn(
+                    f"DHT11 GPIO {pin_num} error: {e}", throttle_duration_sec=10.0
+                )
+                temperatures.append(float('nan'))
+                humidities.append(float('nan'))
+
+        if leak_warnings:
+            self.get_logger().warn(
+                f"{RED_BG} CANISTER HUMIDITY RISE (+10%): {' | '.join(leak_warnings)} {RESET}",
+                throttle_duration_sec=5.0,
+            )
+        if temp_warnings:
+            self.get_logger().warn(
+                f"{YELLOW}CANISTER HIGH TEMP: {' | '.join(temp_warnings)}{RESET}",
+                throttle_duration_sec=5.0,
+            )
+
+        self.temperature_publisher_.publish(Float64MultiArray(data=temperatures))
+        self.humidity_publisher_.publish(Float64MultiArray(data=humidities))
 
 	def cleanup(self):
 		for _, sensor in self.sensors:
