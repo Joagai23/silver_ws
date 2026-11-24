@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import csv
 import math
-import os
-from datetime import datetime
 
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float64, Float64MultiArray, String
 from sensor_msgs.msg import Imu, JointState, Temperature
+
 
 def quat_to_euler_deg(x: float, y: float, z: float, w: float):
     """Convert quaternion (x, y, z, w) to Roll, Pitch, Yaw in degrees."""
@@ -26,21 +24,14 @@ def quat_to_euler_deg(x: float, y: float, z: float, w: float):
 
     return math.degrees(roll), math.degrees(pitch), math.degrees(yaw)
 
+
 class SilverSensorLogger(Node):
 
     def __init__(self):
         super().__init__('silver_sensor_logger')
 
-        default_log_dir = os.path.expanduser('~/silver_logs')
-        self.declare_parameter('log_dir', default_log_dir)
-        self.declare_parameter('log_rate', 2.0)  # Hz
-
-        log_dir = self.get_parameter('log_dir').value
+        self.declare_parameter('log_rate', 0.5)  # Console print rate in Hz (default: every 2.0s)
         log_rate = float(self.get_parameter('log_rate').value)
-        os.makedirs(log_dir, exist_ok=True)
-
-        timestamp_str = datetime.now().strftime('%Y%m%d_%H%M%S')
-        self.csv_path = os.path.join(log_dir, f'silver2_sensors_{timestamp_str}.csv')
 
         # Latest state buffer (initialized to NaN until first message arrives)
         self.data = {
@@ -98,17 +89,10 @@ class SilverSensorLogger(Node):
         # Joint States (per-servo effort / current from ros2_control)
         self.create_subscription(JointState, '/joint_states', self._joint_state_cb, 10)
 
-        # Open CSV and write header
-        self.csv_file = open(self.csv_path, mode='w', newline='', encoding='utf-8')
-        self.fieldnames = ['timestamp_iso', 'elapsed_s'] + list(self.data.keys())
-        self.writer = csv.DictWriter(self.csv_file, fieldnames=self.fieldnames)
-        self.writer.writeheader()
-        self.csv_file.flush()
-
         self.start_time = self.get_clock().now()
-        self.timer = self.create_timer(1.0 / log_rate, self._log_row)
+        self.timer = self.create_timer(1.0 / log_rate, self._print_status)
 
-        self.get_logger().info(f"Logging SILVER2 sensors at {log_rate} Hz -> {self.csv_path}")
+        self.get_logger().info(f"SILVER2 console sensor monitor started ({log_rate} Hz).")
 
     def _set(self, key: str, val):
         self.data[key] = val
@@ -139,26 +123,15 @@ class SilverSensorLogger(Node):
         for i, val in enumerate(msg.effort[:self.num_joints]):
             self.data[f'eff_{i:02d}'] = float(val)
 
-    def _log_row(self):
+    def _print_status(self):
         now = self.get_clock().now()
         elapsed = (now - self.start_time).nanoseconds * 1e-9
-
-        row = {
-            'timestamp_iso': datetime.now().isoformat(timespec='milliseconds'),
-            'elapsed_s': f"{elapsed:.3f}",
-        }
-        for k, v in self.data.items():
-            row[k] = f"{v:.4f}" if isinstance(v, float) and not math.isnan(v) else v
-
-        self.writer.writerow(row)
-        self.csv_file.flush()
 
         self.get_logger().info(
             f"[{elapsed:6.1f}s] Bat: {self.data['vin_V']:.2f}V, {self.data['current_A']:.2f}A, {self.data['power_W']:.1f}W | "
             f"Canister: {self.data['canister_RH_pct']:.1f}% RH, {self.data['canister_T_C']:.1f}C, {self.data['canister_P_mbar']:.0f}mbar | "
             f"Depth: {self.data['ext_depth_m']:.2f}m ({self.data['ext_T_C']:.1f}C) | "
-            f"RPY: ({self.data['imu_roll_deg']:.1f}, {self.data['imu_pitch_deg']:.1f}, {self.data['imu_yaw_deg']:.1f}) deg",
-            throttle_duration_sec=2.0,
+            f"RPY: ({self.data['imu_roll_deg']:.1f}, {self.data['imu_pitch_deg']:.1f}, {self.data['imu_yaw_deg']:.1f}) deg"
         )
 
         dht_parts = []
@@ -169,10 +142,7 @@ class SilverSensorLogger(Node):
             t_s = f"{t:.1f}C" if not math.isnan(t) else "--"
             dht_parts.append(f"G{pin}:{rh_s}/{t_s}")
 
-        self.get_logger().info(
-            f"[{elapsed:6.1f}s] DHT11: " + " | ".join(dht_parts),
-            throttle_duration_sec=2.0,
-        )
+        self.get_logger().info(f"[{elapsed:6.1f}s] DHT11: " + " | ".join(dht_parts))
 
         eff_parts = []
         for leg in range(6):
@@ -183,16 +153,7 @@ class SilverSensorLogger(Node):
                 v_str = "/".join(f"{v:.2f}" if not math.isnan(v) else "--" for v in vals)
                 eff_parts.append(f"L{leg}:{v_str}")
 
-        self.get_logger().info(
-            f"[{elapsed:6.1f}s] Effort: " + " | ".join(eff_parts),
-            throttle_duration_sec=2.0,
-        )
-
-    def close_file(self):
-        if hasattr(self, 'csv_file') and not self.csv_file.closed:
-            self.csv_file.flush()
-            self.csv_file.close()
-            print(f"[INFO] [silver_sensor_logger]: Saved sensor log to {self.csv_path}")
+        self.get_logger().info(f"[{elapsed:6.1f}s] Effort: " + " | ".join(eff_parts))
 
 
 def main(args=None):
@@ -203,7 +164,6 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
     finally:
-        node.close_file()
         node.destroy_node()
         if rclpy.ok():
             rclpy.shutdown()
