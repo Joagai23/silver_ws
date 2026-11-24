@@ -96,11 +96,12 @@ def generate_launch_description():
         cmd=[
             'ros2', 'bag', 'record',
             '-o', bag_output_path,
+            '--topics',
             '/ltc2945/vin', '/ltc2945/current', '/ltc2945/power',
             '/ms8607_i2c0/pressure', '/ms8607_i2c0/temperature', '/ms8607_i2c0/humidity',
             '/ms5837/pressure', '/ms5837/temperature', '/ms5837/depth',
             '/bno055/imu', '/bno055/temp', '/bno055/calib_status',
-            '/dht11/temperature', '/dht11/humidity',
+            '/dht11/locations', '/dht11/temperature', '/dht11/humidity',
             '/joint_states', '/cmd_vel', '/pid_position_controller/commands',
         ],
         output='screen',
