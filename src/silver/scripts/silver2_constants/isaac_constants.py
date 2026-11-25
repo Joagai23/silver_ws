@@ -34,13 +34,29 @@ SILVER2_DEFAULT_FEET_BODY = np.array([
 ])
 
 # Verified standing angles from HAL stability test
-SILVER2_STANDING_ANGLES_DEG = np.array([
+SILVER2_DRAGON_POSE_DEG = np.array([
     [-45.0, -45.0, 130.0],
     [  0.0, -45.0, 130.0],
     [ 45.0, -45.0, 130.0],
     [ 45.0, -45.0, 130.0],
     [  0.0, -45.0, 130.0],
     [-45.0, -45.0, 130.0],
+])
+SILVER2_LOW_TORQUE_POSE_DEG = np.array([
+    [-45.0, 90.0, 0.0],
+    [  0.0, 90.0, 0.0],
+    [ 45.0, 90.0, 0.0],
+    [ 45.0, 90.0, 0.0],
+    [  0.0, 90.0, 0.0],
+    [-45.0, 90.0, 0.0],
+])
+SILVER2_FOLDED_POSE_DEG = np.array([
+    [-45.0, -90.0, 180.0],
+    [  0.0, -90.0, 180.0],
+    [ 45.0, -90.0, 180.0],
+    [ 45.0, -90.0, 180.0],
+    [  0.0, -90.0, 180.0],
+    [-45.0, -90.0, 180.0],
 ])
 
 SILVER2_DIRECTION_MAP = {

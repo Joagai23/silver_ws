@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 Unified ROS 2 Locomotion Manager for SILVER2.
-Supports: 'cpg' (NumPy Hopf CPG), 'odg' (Omnidirectional Gait)
+Supports: 'cpg' (NumPy Hopf CPG), 'odg' (Omnidirectional Gait),
+and synchronized named pose transitions on '/target_pose'.
 """
 
+import math
 import os
 import sys
 import time
@@ -29,23 +31,26 @@ from controllers.numpy_odg_controller import NumpyOmnidirectionalGaitController
 from silver2_constants.isaac_constants import (
     SILVER2_MOUNTS,
     SILVER2_LINKS,
-    SILVER2_STANDING_ANGLES_DEG,
+    SILVER2_DRAGON_POSE_DEG,
+    SILVER2_LOW_TORQUE_POSE_DEG,
+    SILVER2_FOLDED_POSE_DEG
 )
+
 
 class SilverLocomotionManager(Node):
     def __init__(self):
         super().__init__('silver_locomotion_manager')
 
         # --- Declare ROS 2 Parameters ---
-        self.declare_parameter('controller_type', 'cpg')        # 'cpg', 'odg'
-        self.declare_parameter('gait_type', 'tripod')           # 'tripod', 'tetrapod', 'wave'
-        self.declare_parameter('control_rate', 50.0)            # Hz (dt = 0.02s)
-        self.declare_parameter('startup_pose', True)            # Smoothly interpolate to standing pose on boot
-        self.declare_parameter('synchronized_startup', True)   # Synchronize startup pose with all legs at the same time
+        self.declare_parameter('controller_type', 'cpg')       # 'cpg', 'odg'
+        self.declare_parameter('gait_type', 'tripod')          # 'tripod', 'tetrapod', 'wave'
+        self.declare_parameter('control_rate', 50.0)           # Hz (dt = 0.02s)
+        self.declare_parameter('startup_pose', True)           # Move to 'dragon' on boot
+        self.declare_parameter('pose_interp_duration', 3.0)    # Seconds for synchronized pose transition
 
         # --- Declare Locomotion Parameters ---
-        self.declare_parameter('gait_period', 2.0)              # Seconds
-        self.declare_parameter('step_height', 0.05)             # Meters
+        self.declare_parameter('gait_period', 2.0)             # Seconds
+        self.declare_parameter('step_height', 0.05)            # Meters
 
         self.controller_type = self.get_parameter('controller_type').value
         self.gait_type = self.get_parameter('gait_type').value
@@ -53,6 +58,7 @@ class SilverLocomotionManager(Node):
         self.dt = 1.0 / self.control_rate
         self.gait_period = float(self.get_parameter('gait_period').value)
         self.step_height = float(self.get_parameter('step_height').value)
+        self.pose_interp_duration = float(self.get_parameter('pose_interp_duration').value)
 
         # --- State Tracking ---
         self.joint_order = [
@@ -67,11 +73,34 @@ class SilverLocomotionManager(Node):
         self.joint_states_received = False
         self.isaac_robot_signs = np.array([-1.0, -1.0, 1.0], dtype=np.float64)
 
+        # --- Predefined Poses (18 joint angles in radians, robot sign convention) ---
+        dragon_rad = np.deg2rad(
+            (SILVER2_DRAGON_POSE_DEG * self.isaac_robot_signs).flatten()
+        )
+        low_torque_rad = np.deg2rad(
+            (SILVER2_LOW_TORQUE_POSE_DEG * self.isaac_robot_signs).flatten()
+        )
+        folded_rad = np.deg2rad(
+            (SILVER2_FOLDED_POSE_DEG * self.isaac_robot_signs).flatten()
+        )
+        self.predefined_poses = {
+            'dragon': dragon_rad,
+            'low_torque': low_torque_rad,
+            'folded': folded_rad,
+        }
+
         self.vx = 0.0
         self.vy = 0.0
         self.wz = 0.0
         self.t_elapsed = 0.0
         self.ramp = 0.0
+
+        # --- Non-Blocking Synchronized Pose Interpolation State ---
+        self.pose_interp_active = False
+        self.pose_active_name = ''
+        self.pose_q_start = None
+        self.pose_q_target = None
+        self.pose_step = 0
 
         # --- Publishers & Subscribers ---
         self.cmd_pub = self.create_publisher(
@@ -81,26 +110,26 @@ class SilverLocomotionManager(Node):
             JointState, '/joint_states', self._joint_state_cb, 10
         )
         self.create_subscription(
+            String, '/target_pose', self._target_pose_cb, 10
+        )
+        self.create_subscription(
             Twist, '/cmd_vel', self._cmd_vel_cb, 10
         )
 
         # --- Initialize Selected Controller Backend ---
         self._init_controller(self.controller_type)
 
-        # Optional sequential startup transition to standing pose
+        # Optional synchronized startup transition to 'dragon'
         if self.get_parameter('startup_pose').value:
-            if self.get_parameter('synchronized_startup').value:
-                # Sync standing
-                self.move_to_standing_pose()
-            else:
-                # Slow standing
-                self.move_to_standing_pose_slow()
+            self._move_to_pose_blocking('dragon')
 
         # --- Start Control Timer ---
         self.timer = self.create_timer(self.dt, self._control_loop)
+        available = ', '.join(self.predefined_poses.keys())
         self.get_logger().info(
             f"Locomotion Manager ready | Controller: '{self.controller_type}' | "
-            f"Gait: '{self.gait_type}' | Rate: {self.control_rate} Hz"
+            f"Gait: '{self.gait_type}' | Rate: {self.control_rate} Hz | "
+            f"Poses on /target_pose: [{available}]"
         )
 
     def _init_controller(self, mode: str):
@@ -116,7 +145,7 @@ class SilverLocomotionManager(Node):
                 gait=self.gait_type,
             )
             self.default_feet_body = self.controller.compute_default_feet_body(
-                SILVER2_STANDING_ANGLES_DEG, SILVER2_MOUNTS, SILVER2_LINKS
+                SILVER2_DRAGON_POSE_DEG, SILVER2_MOUNTS, SILVER2_LINKS
             )
 
         elif mode == 'odg':
@@ -125,7 +154,7 @@ class SilverLocomotionManager(Node):
                 step_height=self.step_height,
                 gait_period=self.gait_period,
             )
-            robot_standing_deg = SILVER2_STANDING_ANGLES_DEG * self.isaac_robot_signs
+            robot_standing_deg = SILVER2_DRAGON_POSE_DEG * self.isaac_robot_signs
             self.controller.default_feet_body = self.controller.compute_default_feet_body(
                 robot_standing_deg
             )
@@ -147,67 +176,100 @@ class SilverLocomotionManager(Node):
                 self.q_current[i] = pos_map[name]
         self.joint_states_received = True
 
+    def _target_pose_cb(self, msg: String):
+        pose_name = msg.data.strip().lower()
+
+        if pose_name not in self.predefined_poses:
+            available = ', '.join(self.predefined_poses.keys())
+            self.get_logger().warn(
+                f"Unknown pose '{msg.data}'. Available poses: [{available}]"
+            )
+            return
+
+        if not self.joint_states_received:
+            self.get_logger().warn(
+                f"Ignoring /target_pose '{pose_name}': /joint_states not received yet."
+            )
+            return
+
+        lin_mag = float(np.hypot(self.vx, self.vy))
+        if lin_mag > 1e-3 or abs(self.wz) > 1e-3:
+            self.get_logger().warn(
+                f"Ignoring /target_pose '{pose_name}' while /cmd_vel is non-zero. Stop robot first."
+            )
+            return
+
+        self.ramp = 0.0
+        self.pose_q_start = np.copy(self.q_current)
+        self.pose_q_target = np.copy(self.predefined_poses[pose_name])
+        self.pose_active_name = pose_name
+        self.pose_step = 0
+        self.pose_interp_active = True
+
+        self.get_logger().info(
+            f"Transitioning all legs simultaneously to '{pose_name}' "
+            f"over {self.pose_interp_duration:.1f}s..."
+        )
+
     def _cmd_vel_cb(self, msg: Twist):
         self.vx = float(msg.linear.x)
         self.vy = float(msg.linear.y)
         self.wz = float(msg.angular.z)
 
-    # --- Safe Startup Pose Routine ---
-    def move_to_standing_pose_slow(self):
-        self.get_logger().info("Waiting for /joint_states before moving to standing pose...")
-        while rclpy.ok() and not self.joint_states_received:
-            rclpy.spin_once(self, timeout_sec=0.1)
-        if not rclpy.ok():
-            return
-
-        q_tracker = np.copy(self.q_current)
-        q_target_deg = SILVER2_STANDING_ANGLES_DEG * self.isaac_robot_signs
-        q_target = np.deg2rad(q_target_deg.flatten())
-
-        for leg_id in range(6):
-            self.get_logger().info(f"Interpolating Leg {leg_id} to standing configuration...")
-            q_start = np.copy(q_tracker)
-            steps = 30
-            idx_s, idx_e = 3 * leg_id, 3 * leg_id + 3
-
-            for s in range(steps):
-                alpha = (s + 1) / steps
-                q_interp = np.copy(q_start)
-                q_interp[idx_s:idx_e] = (1.0 - alpha) * q_start[idx_s:idx_e] + alpha * q_target[idx_s:idx_e]
-                self._publish_joints(q_interp)
-                time.sleep(1.5 / steps)
-
-            q_tracker = np.copy(q_interp)
-            time.sleep(0.3)
-
-        self.get_logger().info("Standing pose reached. Listening for /cmd_vel...")
-
-    def move_to_standing_pose(self):
-        self.get_logger().info("Waiting for /joint_states before moving to standing pose...")
+    # --- Synchronized Startup Transition ---
+    def _move_to_pose_blocking(self, pose_name: str):
+        self.get_logger().info(f"Waiting for /joint_states before moving to '{pose_name}'...")
         while rclpy.ok() and not self.joint_states_received:
             rclpy.spin_once(self, timeout_sec=0.1)
         if not rclpy.ok():
             return
 
         q_start = np.copy(self.q_current)
-        q_target_deg = SILVER2_STANDING_ANGLES_DEG * self.isaac_robot_signs
-        q_target = np.deg2rad(q_target_deg.flatten())
-        steps = 30
-        self.get_logger().info("Interpolating all legs to standing configuration...")
+        q_target = self.predefined_poses[pose_name]
+        steps = max(1, int(round(self.pose_interp_duration / self.dt)))
 
-        for s in range(steps):
-            alpha = (s + 1) / steps
+        self.get_logger().info(
+            f"Interpolating all legs simultaneously to '{pose_name}' "
+            f"over {self.pose_interp_duration:.1f}s..."
+        )
+        for s in range(1, steps + 1):
+            raw_alpha = s / steps
+            alpha = 0.5 * (1.0 - math.cos(math.pi * raw_alpha))
             q_interp = (1.0 - alpha) * q_start + alpha * q_target
             self._publish_joints(q_interp)
-            time.sleep(1.5 / steps)
+            time.sleep(self.dt)
 
-        time.sleep(0.3)
-        self.get_logger().info("Standing pose reached. Listening for /cmd_vel...")
+        self.get_logger().info(f"Pose '{pose_name}' reached.")
+
+    # --- Non-Blocking Synchronized Pose Step (50 Hz) ---
+    def _step_pose_interpolation(self):
+        interp_steps = max(1, int(round(self.pose_interp_duration / self.dt)))
+        self.pose_step += 1
+
+        raw_alpha = min(1.0, self.pose_step / interp_steps)
+        alpha = 0.5 * (1.0 - math.cos(math.pi * raw_alpha))
+
+        q_cmd = (1.0 - alpha) * self.pose_q_start + alpha * self.pose_q_target
+        self._publish_joints(q_cmd)
+
+        if raw_alpha >= 1.0:
+            self.pose_interp_active = False
+            self.get_logger().info(f"Pose '{self.pose_active_name}' reached.")
 
     # --- Main Real-Time Control Loop ---
     def _control_loop(self):
         lin_mag = float(np.hypot(self.vx, self.vy))
         is_moving = (lin_mag > 1e-3) or (abs(self.wz) > 1e-3)
+
+        if self.pose_interp_active:
+            if is_moving:
+                self.pose_interp_active = False
+                self.get_logger().info(
+                    f"Transition to '{self.pose_active_name}' preempted by non-zero /cmd_vel."
+                )
+            else:
+                self._step_pose_interpolation()
+                return
 
         if not is_moving:
             self.ramp = max(0.0, self.ramp - self.dt * 2.0)
@@ -257,6 +319,7 @@ class SilverLocomotionManager(Node):
         msg.data = [float(x) for x in q_flat]
         self.cmd_pub.publish(msg)
 
+
 def main(args=None):
     rclpy.init(args=args)
     node = SilverLocomotionManager()
@@ -268,6 +331,7 @@ def main(args=None):
         node.destroy_node()
         if rclpy.ok():
             rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()

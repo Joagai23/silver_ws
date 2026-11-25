@@ -4,7 +4,7 @@ from silver2_constants.isaac_constants import (
     SILVER2_MOUNTS,
     SILVER2_LINKS,
     GAIT_CONFIGS,
-    SILVER2_STANDING_ANGLES_DEG,
+    SILVER2_DRAGON_POSE_DEG,
 )
 
 class NumpyOmnidirectionalGaitController:
@@ -169,7 +169,7 @@ class NumpyOmnidirectionalGaitController:
         from joint angles (in degrees).
         """
         if standing_angles_deg is None:
-            standing_angles_deg = SILVER2_STANDING_ANGLES_DEG
+            standing_angles_deg = SILVER2_DRAGON_POSE_DEG
 
         q_deg = np.asarray(standing_angles_deg, dtype=np.float64).reshape(6, 3)
         q_rad = np.deg2rad(q_deg)
